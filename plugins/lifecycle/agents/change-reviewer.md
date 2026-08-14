@@ -69,6 +69,40 @@ miss, because every individual addition looks reasonable and nothing about it is
 **Before asking for code to exist, establish that it needs to.** "This case is unhandled" is a finding only
 once you can say what breaks without the handling.
 
+<!-- shared:budget:start source=budget.md -->
+**How much a call is allowed to cost is configured, not improvised.** `.agents/lifecycle.md` § *Effort
+and budget* sets, per role: the **model tier**, the **reasoning effort**, and a **soft output ceiling**.
+Read it before dispatching, and pass the tier and effort you find there.
+
+Four levers, in the order they actually move cost:
+
+1. **How many calls** — the lens count. Six lenses cost three times two lenses, and this is the largest
+   lever by a distance.
+2. **Which tier** — a cheap tier on a call whose shape is already written down.
+3. **How much effort** — reasoning effort per call, independent of tier.
+4. **The output ceiling** — how long a report may run.
+
+**The ceiling is an instruction to the callee, not an enforced limit.** So it is written as a
+consequence, and the consequence is never "skim":
+
+> Stay under about `<n>` output tokens. **If the work does not fit, return `reviewer-uncertainty` and say
+> what you did not reach — never a shallow pass inside the budget.**
+
+A truncated report that reads as complete is the one outcome worse than an expensive one, because the
+caller cannot tell the difference and ships on it.
+
+Two rules that keep a budget honest:
+
+- **Report what a phase cost** when the run is over: calls made, tier each ran on, and anything that hit
+  its ceiling. A budget nobody measures is a preference.
+- **A budget is a default, not a cap on judgement.** Where a call genuinely needs more — a diff far past
+  what one lens can hold, a security lens over a permission change — take the higher tier and **say in
+  one line that you did and why.** Silently overspending and silently underspending are the same defect.
+
+If `.agents/lifecycle.md` sets no budget, say so once and use the defaults in this document's own model
+table.
+<!-- shared:budget:end -->
+
 <!-- shared:uncertainty-signal:start source=uncertainty-signal.md -->
 **When you cannot reach a confident answer, say so and name which kind.** The caller routes on the name;
 a confident-sounding answer about something you could not actually see reads as a clean bill of health,

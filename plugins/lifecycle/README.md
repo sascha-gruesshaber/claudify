@@ -1,6 +1,6 @@
 # lifecycle
 
-A committed-spec engineering lifecycle for Claude Code. Eleven callable skills, six sub-agents, one
+A committed-spec engineering lifecycle for Claude Code. Twelve callable skills, six sub-agents, one
 driver.
 
 ```
@@ -11,7 +11,7 @@ driver.
                    reads the state, runs what is next
 ```
 
-Called from inside the loop: `/tdd`, `/diagnose`, `/resolve-conflicts`.
+Called from inside the loop: `/tdd`, `/diagnose`, `/resolve-conflicts`, `/show`.
 
 ## Layout
 
@@ -21,7 +21,7 @@ commands/
 
 skills/
 ├── _shared/              one rule, one file — see its README
-│   ├── fragments/        14 rules: 11 law, 3 shape
+│   ├── fragments/        15 rules: 12 law, 3 shape
 │   ├── fragments.json    which document requires or forbids which
 │   └── tools/            sync + check, and their tests
 ├── onboard/              the setup ceremony
@@ -30,6 +30,7 @@ skills/
 ├── frame/ grill/ spec/   design
 ├── plan/ plan-check/     planning
 ├── build/                orchestration — prompts.md holds the lens catalogue
+├── show/                 a page the user can annotate — page-template.html is the skeleton
 └── tdd/ diagnose/ resolve-conflicts/
 
 agents/

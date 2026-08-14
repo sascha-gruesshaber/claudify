@@ -1,0 +1,353 @@
+<title>Replace This Name</title>
+<!--
+  Skeleton for an annotatable page. Copy it, replace the palette and the content, keep the script.
+  The artifact wrapper supplies <!doctype>, <html>, <head> and <body> — do not add them.
+
+  The palette below is a NEUTRAL STARTING POINT, not a house style. Re-pick the accent and the
+  neutrals for the subject before you ship; a page that reuses this exact palette every time reads
+  as templated. What must not change is the token STRUCTURE: bare :root defines the whole light
+  palette, the media query and the [data-theme] block redefine only tokens, and body paints an
+  explicit background. A colour defined only inside a media block renders one theme's text on the
+  other theme's ground.
+-->
+<style>
+  :root {
+    --ground: #F6F7F4;
+    --panel: #FFFFFF;
+    --panel-2: #EFF1EC;
+    --ink: #171A18;
+    --ink-2: #4A514C;
+    --ink-3: #7C847E;
+    --rule: #DCE0D9;
+    --rule-strong: #C2C8BE;
+    --accent: #1F6F5C;
+    --accent-soft: #E2EFEA;
+    --crit: #A03028;
+    --mark: #C9761B;
+    --shadow: 0 1px 2px rgba(23,26,24,.05), 0 6px 20px rgba(23,26,24,.05);
+    --serif: "Iowan Old Style", "Charter", Georgia, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #141715; --panel: #1C201D; --panel-2: #232823;
+      --ink: #E9EDE8; --ink-2: #B2BAB4; --ink-3: #838C86;
+      --rule: #2E342F; --rule-strong: #414840;
+      --accent: #63BFA3; --accent-soft: #1B322B;
+      --crit: #E2786C; --mark: #E0A05A;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #141715; --panel: #1C201D; --panel-2: #232823;
+    --ink: #E9EDE8; --ink-2: #B2BAB4; --ink-3: #838C86;
+    --rule: #2E342F; --rule-strong: #414840;
+    --accent: #63BFA3; --accent-soft: #1B322B;
+    --crit: #E2786C; --mark: #E0A05A;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font-family: var(--sans); font-size: 16px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased; padding-bottom: 96px;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  header.mast { border-bottom: 1px solid var(--rule); padding: 56px 0 28px; margin-bottom: 40px; }
+  .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 14px; }
+  h1 { font-family: var(--serif); font-size: clamp(32px,5vw,50px); line-height: 1.05; letter-spacing: -.015em; margin: 0 0 16px; text-wrap: balance; }
+  .standfirst { font-family: var(--serif); font-size: 19px; color: var(--ink-2); max-width: 62ch; margin: 0; }
+
+  section { margin: 0 0 64px; }
+  h2 { font-family: var(--serif); font-size: 30px; margin: 0 0 6px; text-wrap: balance; }
+  .sub { color: var(--ink-2); max-width: 68ch; margin: 0 0 28px; }
+  p { margin: 0 0 12px; }
+  code, .mono { font-family: var(--mono); font-size: .88em; }
+
+  /* --- flow board: one column per actor, one row per phase --- */
+  .board-scroll { overflow-x: auto; padding-bottom: 6px; }
+  .board { display: grid; gap: 9px; min-width: 880px; }
+  .colhead { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; padding: 8px 12px; border-radius: 6px; font-weight: 600; background: var(--accent-soft); color: var(--accent); }
+  .phase { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); padding-top: 16px; border-top: 1px solid var(--rule); }
+  .cell { border-top: 1px solid var(--rule); padding-top: 12px; }
+
+  .step {
+    position: relative; display: block; width: 100%; text-align: left; cursor: pointer;
+    background: var(--panel); border: 1px solid var(--rule); border-left: 3px solid var(--accent);
+    border-radius: 5px; padding: 10px 28px 10px 11px;
+    font-family: inherit; font-size: 13px; line-height: 1.4; color: var(--ink);
+    transition: border-color .12s, transform .12s;
+  }
+  .step + .step { margin-top: 8px; }
+  .step:hover { transform: translateX(1px); }
+  .step:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
+  .step .name { font-family: var(--mono); font-size: 11.5px; display: block; margin-bottom: 3px; color: var(--accent); }
+  .step .what { color: var(--ink-2); font-size: 12px; }
+  .step.missing { border-left-color: var(--crit); border-style: dashed; background: transparent; }
+  .step.missing .name { color: var(--crit); }
+
+  /* --- cards: options, findings, questions --- */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 14px; }
+  .card { position: relative; background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; padding: 16px 18px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 8px; }
+  .card h4 { margin: 0; font-family: var(--serif); font-size: 19px; line-height: 1.25; padding-right: 34px; }
+  .card p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
+  .card blockquote { margin: 2px 0; padding-left: 12px; border-left: 2px solid var(--rule-strong); font-family: var(--serif); font-size: 14.5px; color: var(--ink); }
+  .chip { display: inline-block; align-self: flex-start; font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; font-weight: 600; background: var(--accent-soft); color: var(--accent); }
+  .chip.warn { background: var(--panel-2); color: var(--crit); }
+  .pick { font-family: var(--mono); font-size: 11px; color: var(--mark); }
+
+  /* --- split: before and after --- */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .panel { position: relative; background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; padding: 16px 18px; box-shadow: var(--shadow); }
+  .panel .label { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+
+  /* --- rows: one per numbered requirement --- */
+  table.rows { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.rows th, table.rows td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  table.rows th { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+  table.rows td.n { font-family: var(--mono); color: var(--ink-3); width: 3ch; }
+
+  /* --- notes machinery: keep as is --- */
+  [data-note] { position: relative; }
+  .noteBtn {
+    position: absolute; top: 8px; right: 8px; width: 22px; height: 22px;
+    border-radius: 5px; border: 1px solid var(--rule); background: var(--panel-2);
+    color: var(--ink-3); font-size: 13px; line-height: 1; cursor: pointer;
+    display: grid; place-items: center; padding: 0; opacity: 0; transition: opacity .12s;
+  }
+  [data-note]:hover .noteBtn, [data-note]:focus-within .noteBtn, .noteBtn.has { opacity: 1; }
+  .noteBtn:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; opacity: 1; }
+  .noteBtn.has { background: var(--mark); border-color: var(--mark); color: #fff; }
+
+  .noteBox { margin-top: 10px; display: none; }
+  .noteBox.open { display: block; }
+  .noteBox textarea { width: 100%; min-height: 62px; resize: vertical; background: var(--panel-2); color: var(--ink); border: 1px solid var(--rule-strong); border-radius: 6px; padding: 8px 10px; font-family: var(--sans); font-size: 13.5px; line-height: 1.45; }
+  .noteBox textarea:focus-visible { outline: 2px solid var(--mark); outline-offset: 1px; }
+  .noteBox .hint { font-family: var(--mono); font-size: 10.5px; color: var(--ink-3); margin-top: 4px; }
+
+  .tray { position: fixed; left: 0; right: 0; bottom: 0; background: var(--panel); border-top: 1px solid var(--rule-strong); box-shadow: 0 -6px 24px rgba(0,0,0,.08); z-index: 40; }
+  .tray-inner { max-width: 1120px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .tray .count { font-family: var(--mono); font-size: 12.5px; color: var(--ink-2); }
+  .tray .count b { color: var(--mark); }
+  .tray .spacer { flex: 1; }
+  .btn { font-family: var(--sans); font-size: 13.5px; font-weight: 600; padding: 8px 15px; border-radius: 6px; border: 1px solid var(--rule-strong); background: var(--panel-2); color: var(--ink); cursor: pointer; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn:disabled { opacity: .45; cursor: default; }
+  .btn.armed { border-color: var(--crit); color: var(--crit); }
+  .btn:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
+
+  dialog { border: 1px solid var(--rule-strong); border-radius: 10px; background: var(--panel); color: var(--ink); padding: 0; max-width: 760px; width: 92vw; }
+  dialog::backdrop { background: rgba(0,0,0,.45); }
+  .dlg { padding: 20px 22px; display: flex; flex-direction: column; gap: 12px; }
+  .dlg h3 { margin: 0; }
+  .dlg textarea { width: 100%; min-height: 300px; background: var(--panel-2); color: var(--ink); border: 1px solid var(--rule-strong); border-radius: 6px; padding: 12px; font-family: var(--mono); font-size: 12.5px; line-height: 1.55; }
+  .dlg .row { display: flex; gap: 10px; align-items: center; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none; } }
+  @media (max-width: 640px) { .split { grid-template-columns: 1fr; } .noteBtn { opacity: 1; } }
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <p class="eyebrow">REPLACE · context and date</p>
+    <h1>Replace this headline</h1>
+    <p class="standfirst">Replace this with one or two sentences saying what the page is for and what you want back.</p>
+  </header>
+
+  <!-- REPLACE EVERYTHING BELOW with the shape you picked. Annotatable-block markup: SKILL.md § Step 2 — Build it. -->
+
+  <section>
+    <h2>Replace this section</h2>
+    <p class="sub">Replace this.</p>
+  </section>
+
+</div>
+
+<div class="tray">
+  <div class="tray-inner">
+    <span class="count" id="count">No notes yet — click any box to add one.</span>
+    <span class="spacer"></span>
+    <button class="btn" id="clearBtn" disabled>Clear all</button>
+    <button class="btn primary" id="copyBtn" disabled>Copy for Claude</button>
+  </div>
+</div>
+
+<dialog id="dlg">
+  <div class="dlg">
+    <h3>Paste this into the chat</h3>
+    <textarea id="out" readonly aria-label="Your notes, ready to paste into the chat"></textarea>
+    <div class="row">
+      <button class="btn primary" id="doCopy">Copy to clipboard</button>
+      <button class="btn" id="closeDlg">Close</button>
+      <span class="count" id="copyState"></span>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(() => {
+  // Namespace the store per page so two pages never share notes.
+  var STORE = `notes-${(document.title || "page").replace(/\W+/g, "-").toLowerCase()}`;
+  var notes = {};
+
+  try {
+    const raw = localStorage.getItem(STORE);
+    if (raw) notes = JSON.parse(raw);
+  } catch {
+    notes = {}; // sandboxed storage or corrupt payload — notes live for this page view only
+  }
+
+  function persist() {
+    try { localStorage.setItem(STORE, JSON.stringify(notes)); } catch (_e) {}
+  }
+
+  // Resolved BEFORE the wiring loop: each block's initial refresh() calls tray(), which reads these.
+  // Looking them up after the loop makes the first block throw and silently kills every block after it.
+  var countEl = document.getElementById("count");
+  var copyBtn = document.getElementById("copyBtn");
+  var clearBtn = document.getElementById("clearBtn");
+  var armed = null;
+
+  function tray() {
+    if (armed !== null) disarmClear();
+    var n = Object.keys(notes).length;
+    var plural = n === 1 ? "" : "s";
+    countEl.innerHTML = n === 0
+      ? "No notes yet — click any box to add one."
+      : `<b>${n}</b> note${plural} ready to send.`;
+    copyBtn.disabled = n === 0;
+    clearBtn.disabled = n === 0;
+  }
+
+  var order = [];
+
+  document.querySelectorAll("[data-note]").forEach((host, i) => {
+    var label = host.dataset.label || (`Item ${i + 1}`);
+    var id = label;                    // keyed by label, so a note survives the page gaining a section
+    order.push({ id: id, label: label });
+
+    var btn = document.createElement("button");
+    btn.className = "noteBtn";
+    btn.type = "button";
+    btn.setAttribute("aria-label", `Add a note on: ${label}`);
+    btn.textContent = "+";
+
+    var box = document.createElement("div");
+    box.className = "noteBox";
+    var ta = document.createElement("textarea");
+    ta.placeholder = `Your note on “${label}”…`;
+    ta.value = notes[id] ? notes[id].text : "";
+    var hint = document.createElement("div");
+    hint.className = "hint";
+    hint.textContent = label;
+    box.appendChild(ta);
+    box.appendChild(hint);
+
+    function refresh() {
+      var has = ta.value.trim().length > 0;
+      btn.classList.toggle("has", has);
+      btn.textContent = has ? "●" : "+";
+      if (has) notes[id] = { label: label, text: ta.value.trim() };
+      else delete notes[id];
+      persist();
+      tray();
+    }
+    ta.addEventListener("input", refresh);
+
+    function toggle(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      if (box.classList.toggle("open")) ta.focus();
+    }
+    btn.addEventListener("click", toggle);
+    if (host.classList.contains("step")) host.addEventListener("click", toggle);
+
+    // Where the button and the box can legally live depends on the host element.
+    if (host.tagName === "TR") {
+      // A <div> parented to a <tr> is dropped out of the table's layout, so both go in the last cell.
+      const cell = host.lastElementChild || host;
+      cell.style.position = "relative";
+      cell.appendChild(btn);
+      cell.appendChild(box);
+    } else if (host.tagName === "BUTTON") {
+      host.appendChild(btn);
+      // A <button> cannot contain a textarea, so its box goes after it rather than inside.
+      host.parentNode.insertBefore(box, host.nextSibling);
+    } else {
+      host.appendChild(btn);
+      host.appendChild(box);
+    }
+
+    refresh();
+  });
+
+  function build() {
+    var lines = [`Notes on “${document.title}”:`, ""];
+    order.forEach((o) => {
+      if (notes[o.id]) lines.push(`- **${o.label}** — ${notes[o.id].text}`);
+    });
+    return lines.join("\n");
+  }
+
+  var dlg = document.getElementById("dlg");
+  var out = document.getElementById("out");
+  var copyState = document.getElementById("copyState");
+
+  copyBtn.addEventListener("click", () => {
+    out.value = build();
+    copyState.textContent = "";
+    dlg.showModal();
+    out.focus();
+    out.select();
+  });
+
+  document.getElementById("doCopy").addEventListener("click", () => {
+    out.select();
+    var done = false;
+    try { done = document.execCommand("copy"); } catch (_e) {}
+    if (!done && navigator.clipboard) {
+      navigator.clipboard.writeText(out.value).then(
+        () => { copyState.textContent = "Copied."; },
+        () => { copyState.textContent = "Select the text and copy it by hand."; }
+      );
+      return;
+    }
+    copyState.textContent = done ? "Copied." : "Select the text and copy it by hand.";
+  });
+
+  document.getElementById("closeDlg").addEventListener("click", () => { dlg.close(); });
+
+  function disarmClear() {
+    clearTimeout(armed);
+    armed = null;
+    clearBtn.textContent = "Clear all";
+    clearBtn.classList.remove("armed");
+  }
+
+  // Two taps, never confirm(): the viewer sandbox blocks alert/confirm/prompt, so a confirm() guard
+  // returns false and the handler silently does nothing.
+  clearBtn.addEventListener("click", () => {
+    if (armed === null) {
+      clearBtn.textContent = "Clear all — tap again";
+      clearBtn.classList.add("armed");
+      armed = setTimeout(disarmClear, 4000);
+      return;
+    }
+    disarmClear();
+    notes = {};
+    persist();
+    document.querySelectorAll(".noteBox textarea").forEach((t) => { t.value = ""; });
+    document.querySelectorAll(".noteBtn").forEach((b) => {
+      b.classList.remove("has");
+      b.textContent = "+";
+    });
+    tray();
+  });
+
+  tray();
+})();
+</script>

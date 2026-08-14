@@ -154,6 +154,39 @@ reviewer grades how completely the wording was satisfied rather than whether it 
 The same bar governs an assumption recorded instead of a question: an assumption you cannot check is a
 question somebody should have asked.
 <!-- shared:criterion-quality:end -->
+<!-- shared:budget:start source=budget.md -->
+**How much a call is allowed to cost is configured, not improvised.** `.agents/lifecycle.md` § *Effort
+and budget* sets, per role: the **model tier**, the **reasoning effort**, and a **soft output ceiling**.
+Read it before dispatching, and pass the tier and effort you find there.
+
+Four levers, in the order they actually move cost:
+
+1. **How many calls** — the lens count. Six lenses cost three times two lenses, and this is the largest
+   lever by a distance.
+2. **Which tier** — a cheap tier on a call whose shape is already written down.
+3. **How much effort** — reasoning effort per call, independent of tier.
+4. **The output ceiling** — how long a report may run.
+
+**The ceiling is an instruction to the callee, not an enforced limit.** So it is written as a
+consequence, and the consequence is never "skim":
+
+> Stay under about `<n>` output tokens. **If the work does not fit, return `reviewer-uncertainty` and say
+> what you did not reach — never a shallow pass inside the budget.**
+
+A truncated report that reads as complete is the one outcome worse than an expensive one, because the
+caller cannot tell the difference and ships on it.
+
+Two rules that keep a budget honest:
+
+- **Report what a phase cost** when the run is over: calls made, tier each ran on, and anything that hit
+  its ceiling. A budget nobody measures is a preference.
+- **A budget is a default, not a cap on judgement.** Where a call genuinely needs more — a diff far past
+  what one lens can hold, a security lens over a permission change — take the higher tier and **say in
+  one line that you did and why.** Silently overspending and silently underspending are the same defect.
+
+If `.agents/lifecycle.md` sets no budget, say so once and use the defaults in this document's own model
+table.
+<!-- shared:budget:end -->
 
 ## Step 3 — Check it before anyone builds on it
 
@@ -189,8 +222,10 @@ directly, and record what is still open under `## Open`.
 One commit: `docs(specs): design <feature>`, per `.agents/naming.md`. Leave it uncommitted until step 3
 is done — what comes back usually changes it.
 
-Then put it in front of the user: spawn [`operator-view`](../../agents/operator-view.md) with the path.
-They are about to be asked to agree with a document they have so far only seen as chat messages.
+Then put it in front of the user. They are about to be asked to agree with a document they have so far
+only seen as chat messages, so hand it to [`operator-view`](../../agents/operator-view.md) with the path
+— or, when the requirements are worth reading one at a time and annotating,
+[`show`](../show/SKILL.md) builds it as a page whose numbered lines they can comment on.
 
 ## Step 5 — Tell the board, if that is a standing write
 

@@ -1,33 +1,134 @@
 {
-  "$comment": "Read ONLY by tools/skills.mjs. A skill or agent listed under `requires` must carry that fragment's managed region; one listed under `forbids` must not. Paths are relative to the plugin root. A fragment no target requires is an orphan and fails `check` — a rule nobody applies is a rule that can be wrong without anybody finding out.",
-
+  "$comment": "Read ONLY by tools/skills.mjs. A skill or agent listed under `requires` must carry that fragment's managed region; one listed under `forbids` must not. Paths are relative to the plugin root. A fragment no target requires is an orphan and fails `check` \u2014 a rule nobody applies is a rule that can be wrong without anybody finding out.",
   "requires": {
-    "skills/onboard/SKILL.md": ["edge-case-probe"],
-    "skills/workflow/SKILL.md": ["repo-config"],
-    "skills/frame/SKILL.md": ["repo-config", "edge-case-probe", "criterion-quality", "agent-names"],
-    "skills/grill/SKILL.md": ["repo-config", "edge-case-probe", "agent-names"],
-    "skills/spec/SKILL.md": ["repo-config", "spec-shape", "criterion-quality", "tracker-limits", "agent-names"],
-    "skills/plan/SKILL.md": ["repo-config", "spec-shape", "model-choice", "agent-names"],
-    "skills/plan-check/SKILL.md": ["repo-config", "no-prejudging", "evidence-before-claims", "agent-names"],
-    "skills/build/SKILL.md": ["repo-config", "worktree", "file-handoff", "model-choice", "no-prejudging", "gates", "tracker-limits", "agent-names"],
-    "skills/tdd/SKILL.md": ["repo-config"],
-    "skills/diagnose/SKILL.md": ["evidence-before-claims", "uncertainty-signal"],
-    "skills/resolve-conflicts/SKILL.md": ["gates", "evidence-before-claims"],
-    "agents/ticket-implementer.md": ["repo-config", "agent-report-contract", "evidence-before-claims", "gates", "uncertainty-signal"],
-    "agents/finding-fixer.md": ["repo-config", "agent-report-contract", "evidence-before-claims", "gates"],
-    "agents/change-reviewer.md": ["repo-config", "agent-report-contract", "uncertainty-signal"],
-    "agents/spec-reviewer.md": ["repo-config", "agent-report-contract", "criterion-quality", "uncertainty-signal"],
-    "agents/code-scout.md": ["repo-config", "agent-report-contract", "uncertainty-signal"]
+    "skills/onboard/SKILL.md": [
+      "edge-case-probe"
+    ],
+    "skills/workflow/SKILL.md": [
+      "repo-config"
+    ],
+    "skills/frame/SKILL.md": [
+      "repo-config",
+      "edge-case-probe",
+      "criterion-quality",
+      "agent-names"
+    ],
+    "skills/grill/SKILL.md": [
+      "repo-config",
+      "edge-case-probe",
+      "agent-names"
+    ],
+    "skills/spec/SKILL.md": [
+      "repo-config",
+      "spec-shape",
+      "criterion-quality",
+      "tracker-limits",
+      "agent-names",
+      "budget"
+    ],
+    "skills/plan/SKILL.md": [
+      "repo-config",
+      "spec-shape",
+      "model-choice",
+      "agent-names",
+      "budget"
+    ],
+    "skills/plan-check/SKILL.md": [
+      "repo-config",
+      "no-prejudging",
+      "evidence-before-claims",
+      "agent-names",
+      "budget"
+    ],
+    "skills/build/SKILL.md": [
+      "repo-config",
+      "worktree",
+      "file-handoff",
+      "model-choice",
+      "no-prejudging",
+      "gates",
+      "tracker-limits",
+      "agent-names",
+      "budget"
+    ],
+    "skills/tdd/SKILL.md": [
+      "repo-config"
+    ],
+    "skills/diagnose/SKILL.md": [
+      "evidence-before-claims",
+      "uncertainty-signal"
+    ],
+    "skills/resolve-conflicts/SKILL.md": [
+      "gates",
+      "evidence-before-claims"
+    ],
+    "agents/ticket-implementer.md": [
+      "repo-config",
+      "agent-report-contract",
+      "evidence-before-claims",
+      "gates",
+      "uncertainty-signal"
+    ],
+    "agents/finding-fixer.md": [
+      "repo-config",
+      "agent-report-contract",
+      "evidence-before-claims",
+      "gates"
+    ],
+    "agents/change-reviewer.md": [
+      "repo-config",
+      "agent-report-contract",
+      "uncertainty-signal",
+      "budget"
+    ],
+    "agents/spec-reviewer.md": [
+      "repo-config",
+      "agent-report-contract",
+      "criterion-quality",
+      "uncertainty-signal",
+      "budget"
+    ],
+    "agents/code-scout.md": [
+      "repo-config",
+      "agent-report-contract",
+      "uncertainty-signal"
+    ],
+    "skills/show/SKILL.md": [
+      "agent-names"
+    ]
   },
-
   "forbids": {
     "$comment": "A fragment whose presence would be actively wrong here, rather than merely unnecessary.",
-    "skills/spec/SKILL.md": ["model-choice", "file-handoff", "gates"],
-    "skills/grill/SKILL.md": ["gates"],
-    "skills/onboard/SKILL.md": ["repo-config", "gates", "tracker-limits"],
-    "skills/workflow/SKILL.md": ["gates", "agent-names"],
-    "agents/change-reviewer.md": ["gates"],
-    "agents/spec-reviewer.md": ["gates"],
-    "agents/code-scout.md": ["gates"]
+    "skills/spec/SKILL.md": [
+      "model-choice",
+      "file-handoff",
+      "gates"
+    ],
+    "skills/grill/SKILL.md": [
+      "gates"
+    ],
+    "skills/onboard/SKILL.md": [
+      "repo-config",
+      "gates",
+      "tracker-limits"
+    ],
+    "skills/workflow/SKILL.md": [
+      "gates",
+      "agent-names"
+    ],
+    "agents/change-reviewer.md": [
+      "gates"
+    ],
+    "agents/spec-reviewer.md": [
+      "gates"
+    ],
+    "agents/code-scout.md": [
+      "gates",
+      "budget"
+    ],
+    "skills/show/SKILL.md": [
+      "gates",
+      "tracker-limits"
+    ]
   }
 }

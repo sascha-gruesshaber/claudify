@@ -4,7 +4,7 @@ Two Claude Code plugins, in one marketplace.
 
 | Plugin | What it is |
 |---|---|
-| **`lifecycle`** | A committed-spec engineering lifecycle: eleven callable skills and six sub-agents that take a ticket to a green branch. Reads how *your* repo works from `.agents/`. |
+| **`lifecycle`** | A committed-spec engineering lifecycle: twelve callable skills and six sub-agents that take a ticket to a green branch. Reads how *your* repo works from `.agents/`. |
 | **`plain-words`** | Report in controlled English. Small words, one idea per sentence, what you did / did it work / what now. |
 
 ## Install
@@ -35,8 +35,10 @@ reads. Nothing works until it has run — and that is deliberate.
                                                           agents
 ```
 
-Each one also runs alone. Three more are called from inside the loop: **`/tdd`** (the red-green loop),
-**`/diagnose`** (a feedback loop before a theory), **`/resolve-conflicts`**.
+Each one also runs alone. Four more are called from inside the loop: **`/tdd`** (the red-green loop),
+**`/diagnose`** (a feedback loop before a theory), **`/resolve-conflicts`**, and **`/show`** — which puts
+a flow, a decision round or a spec on a page whose every block the user can annotate, and reads their
+notes back labelled.
 
 ## Or don't remember the chain at all
 
@@ -92,6 +94,7 @@ your repo's business, and they differ everywhere — `.agents/forge.md` records 
 | `/plan` | a contract | ordered tasks, after agents actually read the code |
 | `/plan-check` | a plan | Ready / Ready with changes / Not ready, with every claim verified |
 | `/build` | a Ready plan | a green branch, and a record of every decision taken for you |
+| `/show` | anything worth seeing | a page the user annotates; their notes come back labelled |
 
 ## The idea
 
@@ -124,7 +127,7 @@ That line is the whole design. It is enforced mechanically: see
 They are **committed**, so they are reviewable in a pull request and greppable by a human. Templates
 are in [`plugins/lifecycle/skills/onboard/templates/`](plugins/lifecycle/skills/onboard/templates/).
 
-## What it costs
+## What it costs, and how you cap it
 
 The lifecycle spends model time deliberately, at the points where a mistake is cheapest to fix:
 
@@ -137,11 +140,28 @@ The lifecycle spends model time deliberately, at the points where a mistake is c
 The bet is that one wrong plan costs more than all of it. If your change is small, take the fast path
 `/frame` will offer you.
 
+**You set the price.** `.agents/lifecycle.md` § *Effort and budget* fixes, per role, the **model tier**,
+the **reasoning effort** and a **soft output ceiling** — and `/onboard` asks you for all three. Four
+levers, in the order they actually move cost:
+
+| Lever | Where | Why it matters |
+|---|---|---|
+| **how many calls** | the lens list | six lenses cost three times two. By far the biggest lever. |
+| **which tier** | per role | a cheap tier where the brief already contains the shape |
+| **how much effort** | per role | separate from tier — the review lenses are where effort earns most |
+| **the output ceiling** | per role | how long a report may run |
+
+The ceiling is **an instruction to the callee, not an enforced limit**, so it is written with a
+consequence: a reviewer that cannot finish inside its budget must **say so and escalate, never return a
+shallow pass that fits**. A truncated report reading as complete is the one outcome worse than an
+expensive one, because the caller cannot tell and ships on it.
+
 ## Status
 
-**v0.1.0 — first draft.** The skills and agents are complete and the fragment gate is green.
-[`CONTRIBUTING.md`](CONTRIBUTING.md) lists what has not been proved yet, and it is worth reading before
-you rely on this for something that matters.
+**v0.2.0 — early. Use it, but read the caveats.** All twelve skills, six agents and the fragment gate are
+green, and `/lifecycle:advance` is verified on a real install.
+[`CONTRIBUTING.md`](CONTRIBUTING.md) lists what has **not** been proved yet — chiefly that `/build` has
+never run end to end. Read it before relying on this for something that matters.
 
 ## Where it came from
 

@@ -54,6 +54,11 @@ questions that depended on them. Recompute and ask the next round.
 **A question whose answer depends on another question still open in this round belongs to a later
 round.** Asking it now forces the user to answer two things at once, and the second answer is a guess.
 
+**When a round has more than about three questions, or the options differ structurally rather than in a
+word, put it on a page instead.** [`show`](../show/SKILL.md) builds a decision sheet — one card per
+question, the recommendation marked, every card annotatable — and their notes come back labelled with the
+question they belong to. Six questions are far easier to answer side by side than as prose.
+
 **The session ends when the frontier is empty** — every branch visited, nothing silently assumed. Do
 not act on it until the user confirms you have a shared understanding.
 

@@ -83,11 +83,25 @@ Ask the whole set **in one round**, numbered, each with your recommendation. Nev
 5. **Loop caps.** How many fix rounds per ticket before a finding is parked, and how many re-plans
    before a human is fetched?
    *Recommend: three fix rounds, one re-plan. Both are places this loop gets cheaply stuck.*
-6. **Wave width.** How many tickets may build in parallel?
-   *Recommend: three. It is bounded by how many agent reports one orchestrator can triage well, not
-   by machine capacity.*
-7. **Frozen ground.** Which directories are history that must never be edited or cited as current?
-8. **The glossary.** Is there a vocabulary document, and does it beat a spec's wording?
+6. **How much may one call cost?** Per role: the model tier, the reasoning effort, and a soft output
+   ceiling. Show the default table from
+   [`templates/lifecycle.md`](templates/lifecycle.md) § *Effort and budget* and ask what to change.
+   *Recommend: take the defaults. The lens count in question 4 already moved cost far more than any
+   of these will, so tune that first and come back to this only if a phase feels expensive.*
+
+   Two things to say out loud while asking, because both surprise people:
+
+   - **The ceiling is an instruction, not a limit.** Nothing truncates a reply. A callee that cannot
+     finish inside its budget is told to **say so and escalate** rather than return a shallow pass —
+     which is the only version of a budget that does not quietly cost quality.
+   - **Reasoning effort is separate from the tier.** A cheap tier at high effort and an expensive tier at
+     low effort are different trades, and the review lenses are the place where effort earns more than
+     tier does.
+7. **Wave width.** How many tickets may build in parallel?
+   *Recommend: three. It is bounded by how many agent reports one orchestrator can triage well, not by
+   machine capacity.*
+8. **Frozen ground.** Which directories are history that must never be edited or cited as current?
+9. **The glossary.** Is there a vocabulary document, and does it beat a spec's wording?
    *Recommend: yes, and yes — two words for one thing is the cheapest bug to fix now and the most
    expensive later, because it reaches code, tests, tickets and commit subjects.*
 

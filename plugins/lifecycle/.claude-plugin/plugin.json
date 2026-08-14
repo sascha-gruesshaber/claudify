@@ -1,7 +1,7 @@
 {
   "name": "lifecycle",
-  "version": "0.2.0",
-  "description": "The full ticket-to-green-branch lifecycle as callable skills: frame, grill, spec, plan, plan-check, build, plus tdd, diagnose and resolve-conflicts, and the six sub-agents they dispatch. Type /advance and it runs whichever phase comes next. Reads how your repo works from eight files under .agents/, written by /onboard.",
+  "version": "0.3.0",
+  "description": "The full ticket-to-green-branch lifecycle as callable skills: frame, grill, spec, plan, plan-check, build, plus tdd, diagnose, resolve-conflicts and show, and the six sub-agents they dispatch. Type /advance and it runs whichever phase comes next. Reads how your repo works — gates, tracker, forge, naming, review lenses, loop caps and the per-call effort budget — from eight files under .agents/, written by /onboard.",
   "metadata": {
     "author": "sascha.gruesshaber@gmail.com",
     "tags": "lifecycle, workflow, advance, spec, plan, tdd, code-review, orchestration, worktree, sub-agents, onboarding"

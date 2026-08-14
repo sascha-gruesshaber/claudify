@@ -44,6 +44,50 @@ In the whole-feature sweep, these — from the catalogue in the plugin's `build/
 
 **Not in use here, and why:** <lens> — <reason>. A lens nobody drops is a lens nobody chose.
 
+## Effort and budget
+
+What a single call is allowed to cost. **Tier and effort are the real levers; the ceiling is an
+instruction to the callee.**
+
+| Role | Model | Effort | Soft output ceiling |
+|---|---|---|---|
+| `code-scout` — locate code, cite `path:line` | sonnet | low | 800 |
+| `spec-reviewer` — one lens on a spec | sonnet | medium | 400 |
+| `spec-reviewer` — the implementability lens | opus | high | 600 |
+| `change-reviewer` — one lens per ticket | sonnet | medium | 400 |
+| `change-reviewer` — one lens in the sweep | sonnet | medium | 600 |
+| `ticket-implementer` — mechanical slice | sonnet | medium | — |
+| `ticket-implementer` — design-carrying slice | inherit | high | — |
+| `finding-fixer` — a triaged list | sonnet | medium | 300 |
+| `finding-fixer` — the whole-feature sweep | opus | high | 400 |
+| `operator-view` | sonnet | low | 1 line |
+
+**Ceilings are in output tokens, and they are soft.** A callee that cannot finish inside its ceiling
+returns `reviewer-uncertainty` and says what it did not reach. **It never returns a shallow pass that
+fits the budget** — the caller cannot tell that apart from a clean result, and would ship on it.
+
+### Per-phase ceilings
+
+Not enforced by anything. They are the number at which a run should stop and ask whether it is still
+doing the right thing.
+
+| Phase | Rough ceiling | What blows it |
+|---|---|---|
+| `/frame` | <30k> | scouting a codebase nobody has mapped |
+| `/spec` + its 4 cold reads | <80k> | a second and third review round |
+| `/plan` + `/plan-check` | <150k> | re-planning after a Not ready verdict |
+| one ticket: build + review + fix | <250k> | fix rounds; the cap below is what bounds it |
+| the whole-feature sweep | <120k> | the lens count above, more than anything else |
+
+### When to spend more, deliberately
+
+- a diff of more than ~15 changed files, on the correctness or spec-alignment lens
+- any change touching auth, permissions, tenancy, a migration or a wire contract
+- a lens that came back `clean` on a diff you have concrete reason to distrust
+
+**Say in one line when you escalate, and why.** Silently overspending and silently underspending are the
+same defect.
+
 ## Loop caps
 
 | Loop | Cap | Then |
