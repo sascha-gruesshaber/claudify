@@ -13,7 +13,8 @@ It exists because the lifecycle has eight phases and remembering which one is ne
 anybody's attention — **and because the answer is already written on disk.** Every artefact the
 lifecycle produces is committed, and the spec's `Status:` header is a state machine nobody was reading.
 
-Reachable as `/workflow` or `/advance`. They are the same thing.
+Three ways in, all the same thing: the command **`/lifecycle:advance`**, the skill **`lifecycle:workflow`**,
+or just saying **"advance"** or **"what's next"** in a sentence.
 
 <!-- shared:repo-config:start source=repo-config.md -->
 **This repo describes itself in `.agents/`, at the repository root. Read the files that bind your step,
@@ -43,13 +44,17 @@ Three rules:
 
 | Form | Means |
 |---|---|
-| `/advance` | find the effort, run the next phase, keep going until a gate |
-| `/advance <path>` | the same, for a named spec or effort directory |
-| `/advance --once` | run exactly one phase, then stop and report |
-| `/advance --dry` | say where you are and what is next. **Run nothing.** |
+| `/lifecycle:advance` | find the effort, run the next phase, keep going until a gate |
+| `/lifecycle:advance <path>` | the same, for a named spec or effort directory |
+| `/lifecycle:advance --once` | run exactly one phase, then stop and report |
+| `/lifecycle:advance --dry` | say where you are and what is next. **Run nothing.** |
 
 **Start with `--dry` when you are not sure the state is what you think it is.** It costs one turn and it
 is the whole point of having the state written down.
+
+**Write the command in its namespaced form whenever you name it back to the user** — a plugin command is
+`/<plugin>:<command>`, and the bare `/advance` is an unknown command. Telling somebody to type a command
+that does not resolve costs them a round for nothing.
 
 ## Step 1 — Find the effort
 

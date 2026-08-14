@@ -38,24 +38,44 @@ reads. Nothing works until it has run — and that is deliberate.
 Each one also runs alone. Three more are called from inside the loop: **`/tdd`** (the red-green loop),
 **`/diagnose`** (a feedback loop before a theory), **`/resolve-conflicts`**.
 
-## Or just type `/advance`
+## Or don't remember the chain at all
 
-You do not have to remember the chain. Every artefact the lifecycle writes is committed, and the spec's
-`Status:` header is a state machine — so one skill can read where the work stands and run what comes
-next.
+Every artefact the lifecycle writes is committed, and the spec's `Status:` header is a state machine — so
+one skill can read where the work stands and run whatever comes next.
 
 ```
-/advance          run the next phase, and keep going until a phase needs you
-/advance --dry    say where you are and what is next. Run nothing.
-/advance --once   run exactly one phase, then stop
+/lifecycle:advance          run the next phase, and keep going until a phase needs you
+/lifecycle:advance --dry    say where you are and what is next. Run nothing.
+/lifecycle:advance --once   run exactly one phase, then stop
 ```
+
+Saying **"advance"** or **"what's next"** in a sentence does the same thing — no slash needed.
 
 It **halts at every phase that needs a person** — `/onboard`, `/frame`, `/grill`, and `/build`'s single
-go-ahead — and at a `Not ready` verdict, a loop cap, or a state it does not recognise. A halt always
-names the next command.
+go-ahead — and at a `Not ready` verdict, a loop cap, or a state it does not recognise. **A halt always
+names the next command.**
 
-It reads the state **off disk, never from the conversation**, so it works the same in a fresh session
-the next morning. `/workflow` is the same skill under its own name.
+It reads the state **off disk, never from the conversation**, so it gives the same answer in a fresh
+session the next morning. On a repo it has never seen:
+
+```
+effort    none            (matched by: rule 4 — nothing found)
+status    repo not set up
+beside    .agents/ ✗   spec.md ✗   plan.md ✗   issues/ —
+next      /lifecycle:onboard
+halting   --dry mode, and /onboard needs a person anyway
+```
+
+> **Commands need the namespace; skills do not.** Verified on a real install:
+>
+> | | Bare | Namespaced |
+> |---|---|---|
+> | **commands** — `advance` | ✗ `Unknown command: /advance` | ✓ `/lifecycle:advance` |
+> | **skills** — `frame`, `plan`, `build`, `workflow` | ✓ `/frame` | ✓ `/lifecycle:frame` |
+> | **agents** — `code-scout` and the rest | risky, may hit a repo's own agent | ✓ `lifecycle:code-scout` |
+>
+> So the only thing that needs typing in full is `/lifecycle:advance`. Everything else takes the short
+> form, and plain English works for all of it.
 
 **`/build` stops at a green branch.** Opening a review, posting questions on it and watching it are
 your repo's business, and they differ everywhere — `.agents/forge.md` records how it happens for you.

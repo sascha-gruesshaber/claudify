@@ -7,7 +7,7 @@ driver.
 /onboard                                    once per repo — writes .agents/
    │
 /frame ──▶ /grill ──▶ /spec ──▶ /plan ──▶ /plan-check ──▶ /build ──▶ a green branch
-   ╰────────────────── /advance ───────────────────────────────╯
+   ╰──────────── /lifecycle:advance ───────────────────────────╯
                    reads the state, runs what is next
 ```
 
@@ -17,7 +17,7 @@ Called from inside the loop: `/tdd`, `/diagnose`, `/resolve-conflicts`.
 
 ```
 commands/
-└── advance.md            the /advance slash command — forwards to the workflow skill
+└── advance.md            /lifecycle:advance — forwards to the workflow skill
 
 skills/
 ├── _shared/              one rule, one file — see its README
@@ -52,7 +52,7 @@ configured). The other ten are law and ship inlined.
 
 CI fails the build if a concrete build command appears in any skill or agent.
 
-## `/advance`, and why it can exist at all
+## `/lifecycle:advance`, and why it can exist at all
 
 Every artefact the lifecycle writes is **committed**, and the spec's `Status:` header is a state machine.
 So the answer to "what comes next" is already on disk, and `workflow` reads it: the status, whether
