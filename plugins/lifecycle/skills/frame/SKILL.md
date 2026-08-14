@@ -173,3 +173,15 @@ assumptions. Skipping the round trip never skips the edge-case capture.
 - **Do not write to the board here.** Claiming a ticket is a standing write only where
   `.agents/tracker.md` says so, and it belongs to the skill that owns it.
 - One question per line, all of them in one round. Never drip-feed.
+
+## Dispatching the agents
+
+<!-- shared:agent-names:start source=agent-names.md -->
+**These agents ship inside this plugin, so their `subagent_type` carries the plugin prefix:**
+`lifecycle:code-scout`, `lifecycle:spec-reviewer`, `lifecycle:change-reviewer`,
+`lifecycle:ticket-implementer`, `lifecycle:finding-fixer`, `lifecycle:operator-view`.
+
+A bare name may resolve, and it may also pick up a different agent the repo happens to define. **Pass
+the prefixed form.** Where this document links an agent by file, the prefixed name is what goes in the
+dispatch.
+<!-- shared:agent-names:end -->

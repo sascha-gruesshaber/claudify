@@ -204,3 +204,15 @@ thing found. Then: `/build` on Ready, `/plan` again on Not ready.
 
 **The re-plan cap is in `.agents/lifecycle.md`** — typically one, then get a person. A plan that fails
 twice has something wrong with its premises, and a re-plan loop is unusually cheap to get stuck in.
+
+## Dispatching the agents
+
+<!-- shared:agent-names:start source=agent-names.md -->
+**These agents ship inside this plugin, so their `subagent_type` carries the plugin prefix:**
+`lifecycle:code-scout`, `lifecycle:spec-reviewer`, `lifecycle:change-reviewer`,
+`lifecycle:ticket-implementer`, `lifecycle:finding-fixer`, `lifecycle:operator-view`.
+
+A bare name may resolve, and it may also pick up a different agent the repo happens to define. **Pass
+the prefixed form.** Where this document links an agent by file, the prefixed name is what goes in the
+dispatch.
+<!-- shared:agent-names:end -->

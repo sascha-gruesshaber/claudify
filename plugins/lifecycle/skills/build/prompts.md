@@ -4,9 +4,12 @@
 
 | Role | `subagent_type` | Can write? |
 |---|---|---|
-| builds a ticket, test-first, in its own worktree | `ticket-implementer` | yes |
-| reviews a pinned range through one lens | `change-reviewer` | **no — read-only by tool grant** |
-| applies a triaged finding list | `finding-fixer` | yes |
+| builds a ticket, test-first, in its own worktree | `lifecycle:ticket-implementer` | yes |
+| reviews a pinned range through one lens | `lifecycle:change-reviewer` | **no — read-only by tool grant** |
+| applies a triaged finding list | `lifecycle:finding-fixer` | yes |
+
+**The `lifecycle:` prefix is required**, because these agents ship inside the plugin. A bare name may
+resolve, and it may also pick up a different agent the repo happens to define.
 
 The definition holds everything invariant: the gates, the report shape, the worktree rule. **Your prompt
 carries only what changes per call** — the paths, the SHAs, the lens. Repeating an invariant in the

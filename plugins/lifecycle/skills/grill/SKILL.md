@@ -142,3 +142,15 @@ An empty frontier, and the user's confirmation. Then [`spec`](../spec/SKILL.md) 
 
 Report in four or five lines: what was decided, what was ruled out, which terms went into the
 glossary, and any decision record written.
+
+## Dispatching the agents
+
+<!-- shared:agent-names:start source=agent-names.md -->
+**These agents ship inside this plugin, so their `subagent_type` carries the plugin prefix:**
+`lifecycle:code-scout`, `lifecycle:spec-reviewer`, `lifecycle:change-reviewer`,
+`lifecycle:ticket-implementer`, `lifecycle:finding-fixer`, `lifecycle:operator-view`.
+
+A bare name may resolve, and it may also pick up a different agent the repo happens to define. **Pass
+the prefixed form.** Where this document links an agent by file, the prefixed name is what goes in the
+dispatch.
+<!-- shared:agent-names:end -->

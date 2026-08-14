@@ -523,3 +523,15 @@ each agent runs on, which existing library to use. **A question answerable from 
   [Model choice](#model-choice)). After that, re-scope it or park it, finish the rest of the feature, and
   report the parked ticket. **Never leave the user with nothing shipped.**
 - Commit to the feature branch only.
+
+## Dispatching the agents
+
+<!-- shared:agent-names:start source=agent-names.md -->
+**These agents ship inside this plugin, so their `subagent_type` carries the plugin prefix:**
+`lifecycle:code-scout`, `lifecycle:spec-reviewer`, `lifecycle:change-reviewer`,
+`lifecycle:ticket-implementer`, `lifecycle:finding-fixer`, `lifecycle:operator-view`.
+
+A bare name may resolve, and it may also pick up a different agent the repo happens to define. **Pass
+the prefixed form.** Where this document links an agent by file, the prefixed name is what goes in the
+dispatch.
+<!-- shared:agent-names:end -->

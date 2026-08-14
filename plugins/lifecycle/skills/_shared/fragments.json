@@ -3,12 +3,12 @@
 
   "requires": {
     "skills/onboard/SKILL.md": ["edge-case-probe"],
-    "skills/frame/SKILL.md": ["repo-config", "edge-case-probe", "criterion-quality"],
-    "skills/grill/SKILL.md": ["repo-config", "edge-case-probe"],
-    "skills/spec/SKILL.md": ["repo-config", "spec-shape", "criterion-quality", "tracker-limits"],
-    "skills/plan/SKILL.md": ["repo-config", "spec-shape", "model-choice"],
-    "skills/plan-check/SKILL.md": ["repo-config", "no-prejudging", "evidence-before-claims"],
-    "skills/build/SKILL.md": ["repo-config", "worktree", "file-handoff", "model-choice", "no-prejudging", "gates", "tracker-limits"],
+    "skills/frame/SKILL.md": ["repo-config", "edge-case-probe", "criterion-quality", "agent-names"],
+    "skills/grill/SKILL.md": ["repo-config", "edge-case-probe", "agent-names"],
+    "skills/spec/SKILL.md": ["repo-config", "spec-shape", "criterion-quality", "tracker-limits", "agent-names"],
+    "skills/plan/SKILL.md": ["repo-config", "spec-shape", "model-choice", "agent-names"],
+    "skills/plan-check/SKILL.md": ["repo-config", "no-prejudging", "evidence-before-claims", "agent-names"],
+    "skills/build/SKILL.md": ["repo-config", "worktree", "file-handoff", "model-choice", "no-prejudging", "gates", "tracker-limits", "agent-names"],
     "skills/tdd/SKILL.md": ["repo-config"],
     "skills/diagnose/SKILL.md": ["evidence-before-claims", "uncertainty-signal"],
     "skills/resolve-conflicts/SKILL.md": ["gates", "evidence-before-claims"],
