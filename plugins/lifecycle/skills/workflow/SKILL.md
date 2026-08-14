@@ -1,0 +1,184 @@
+---
+name: workflow
+description: Work out where a piece of work already stands and run the phase that comes next — reading the state off disk rather than asking. Advances through the unattended phases in a row and halts at any phase that needs a person. Use when the user says "advance", "next step", "continue", "keep going", "carry on", "what's next", "where are we", "pick up where we left off", or invokes /advance. Also use when resuming work after a break or a fresh session, and when you are unsure which lifecycle phase applies. Keywords - workflow, advance, next step, continue, keep going, carry on, what's next, where are we, resume, pick up, drive it forward, which phase, state of play.
+---
+
+# Workflow (state on disk → the phase that comes next)
+
+**You do none of the work here. You route.** This skill reads where an effort already stands, names the
+phase that comes next, and invokes it. Then it does the same again, until it reaches something that
+needs a person.
+
+It exists because the lifecycle has eight phases and remembering which one is next is not a good use of
+anybody's attention — **and because the answer is already written on disk.** Every artefact the
+lifecycle produces is committed, and the spec's `Status:` header is a state machine nobody was reading.
+
+Reachable as `/workflow` or `/advance`. They are the same thing.
+
+<!-- shared:repo-config:start source=repo-config.md -->
+**This repo describes itself in `.agents/`, at the repository root. Read the files that bind your step,
+and treat them as authority over anything you would otherwise assume.**
+
+| File | Answers |
+|---|---|
+| `.agents/lifecycle.md` | which phases run, which review lenses are in use, how many rounds each loop gets, how wide a wave may be |
+| `.agents/gates.md` | the commands that must pass, in order, and what "green" means here |
+| `.agents/tracker.md` | where specs and tickets live, and what may be written to the board |
+| `.agents/forge.md` | the git host, and how a branch becomes a reviewed change |
+| `.agents/docs.md` | where architecture truth lives, the glossary, and what "docs are part of done" costs |
+| `.agents/naming.md` | branch, commit, directory and test-name grammar |
+| `.agents/working-agreement.md` | working hours, what may run unattended, how to report, when to stop and ask |
+
+Three rules:
+
+- **A missing file is a real answer: that thing is not configured here.** Say so in one line and take
+  the safest reading — do not invent the repo's conventions, and do not fall back on another project's.
+  If the whole directory is absent, stop and tell the user to run `/onboard` instead of guessing.
+- **`.agents/` beats your own judgement, and loses to the user.** It was written deliberately, so a rule
+  you disagree with is reported once, not routed around.
+- **Read only what your step needs.** Every line costs on every turn of a long run.
+<!-- shared:repo-config:end -->
+
+## Arguments
+
+| Form | Means |
+|---|---|
+| `/advance` | find the effort, run the next phase, keep going until a gate |
+| `/advance <path>` | the same, for a named spec or effort directory |
+| `/advance --once` | run exactly one phase, then stop and report |
+| `/advance --dry` | say where you are and what is next. **Run nothing.** |
+
+**Start with `--dry` when you are not sure the state is what you think it is.** It costs one turn and it
+is the whole point of having the state written down.
+
+## Step 1 — Find the effort
+
+In this order, and **say which rule matched** in one line:
+
+1. **A path in the argument.** A spec file, or the directory holding one.
+2. **The current branch name.** `.agents/naming.md` maps a branch to its effort directory.
+3. **The most recently modified effort directory** whose spec is not `Built`.
+4. **Nothing found** → there is no work in flight. Say so and offer `/frame`.
+
+**Two efforts in flight and no argument is an ambiguity, not a guess.** List them with their statuses
+and ask which one. Picking the most recent is exactly the wrong move when somebody has just come back to
+older work.
+
+## Step 2 — Read the state
+
+Read only these. **Every one is a fact on disk; none of it is inferred from the conversation**, which is
+what makes this work in a fresh session.
+
+| Question | Where the answer is |
+|---|---|
+| is this repo configured at all? | does `.agents/` exist |
+| which phases are even on here? | `.agents/lifecycle.md` |
+| is there a contract? | `spec.md` exists |
+| how far has it got? | the spec's `**Status:**` header |
+| is the contract complete? | is `## Open` absent or empty |
+| is there a plan? | `plan.md` exists |
+| is the plan current? | its `Spec:` header matches, and `Scouted:` is after the last spec commit |
+| was the plan checked? | `plan-check.md`, and its `**Verdict:**` line |
+| is the work split? | `issues/` populated |
+| how much is built? | each ticket's `Status:`, the spec's `**Wave:**`, and `git log` |
+| what has already been decided alone? | `implementation-record.md`, `ledger.md` |
+
+**`git log` outranks your memory and outranks a stale header.** A ticket whose commit is on the branch is
+done whether or not somebody ticked its box — say so, and fix the header.
+
+## Step 3 — The state table
+
+Read top to bottom and take the first row that matches.
+
+| State | Next phase | Gate? |
+|---|---|---|
+| no `.agents/` directory | `/onboard` | **halt** — it interviews you |
+| `.agents/` exists, no effort found | `/frame` | **halt** — it returns questions |
+| an effort exists, no `spec.md`, questions unanswered | `/grill` | **halt** — it is an interview |
+| design settled in conversation, no `spec.md` | `/spec` | continue |
+| `spec.md` has a non-empty `## Open` | `/grill` | **halt** — a draft is not a contract |
+| `Status: Specced`, no `plan.md` | `/plan` | continue |
+| `plan.md` exists but is stale for its spec | `/plan` | continue |
+| `plan.md` current, no `plan-check.md` | `/plan-check` | continue |
+| `Verdict: Not ready`, under the re-plan cap | `/plan` | continue |
+| `Verdict: Not ready`, cap reached | — | **halt** — get a person |
+| `Verdict: Ready with changes` | apply them, then `/plan-check` on what changed | continue |
+| `Verdict: Ready to build`, `Status: Specced` | `/build` | **halt at its go-ahead** |
+| `Status: Building` | `/build` — it resumes itself | continue |
+| `Status: Built` | — | **halt** — name this repo's ship step from `.agents/forge.md` |
+
+**A phase `.agents/lifecycle.md` turns off is skipped, and you say you skipped it.** That file is the
+authority on which phases exist here; a repo that does not use `/plan-check` should not be told it is
+missing one.
+
+**A state not in this table is a real finding.** Say what you observed, say it does not match a known
+state, and stop. **Never pick the nearest row.** A `plan.md` beside a spec that says `Built`, a populated
+`issues/` with no plan, a `Verdict:` line you cannot parse — each of those means something happened that
+this table does not model, and guessing costs more than asking.
+
+## Step 4 — Report, then run
+
+**Report before you run**, in this shape, so a wrong reading is caught in one line rather than three
+phases later:
+
+```
+effort    <path>            (matched by: branch name)
+status    Specced
+beside    plan.md ✓   plan-check.md ✗   issues/ —
+next      /plan, then /plan-check
+halting   before /build, to show you the shape
+
+running /plan …
+```
+
+Then invoke the phase **as a skill**. You are not reimplementing it.
+
+- **`--dry` stops here.** Report and return.
+- **`--once` runs this one phase**, reports, and returns.
+- **Otherwise keep going**: after a phase completes, go back to step 2 and re-read the state from disk.
+  **Re-read it; do not assume the phase moved it where you expected.** A phase that failed halfway leaves
+  a state the table can route on, and trusting your expectation is how a run marches past a problem.
+
+## Step 5 — Halt properly
+
+A halt is a result, not a failure. **Say three things and stop:**
+
+1. **where the work now stands** — the new status, and the artefact that proves it;
+2. **why you stopped** — a human gate, a verdict, a cap, an unknown state;
+3. **the exact next command**, or the exact question that needs answering.
+
+```
+halted   /build is ready to run but wants one go-ahead on the shape
+stands   Specced · plan.md + plan-check.md committed · Verdict: Ready to build
+next     /build          (or /advance again — it will offer the same go-ahead)
+```
+
+**Never halt silently, and never halt without naming the next move.** A driver that stops without saying
+why is worse than no driver, because the user now has to work out both where they are *and* whether
+something broke.
+
+## What halts a run, in full
+
+- **Every interactive phase** — `/onboard`, `/frame`, `/grill`. Their whole value is that a person
+  answers, and answering for them defeats the purpose.
+- **`/build`'s single go-ahead.** It is the one interruption in the unattended half, and it is
+  deliberate.
+- **A verdict or a cap** — `Not ready` twice, a fix loop past its round cap, a failing gate.
+- **An unknown state**, per step 3.
+- **Outside working hours**, where `.agents/working-agreement.md` sets them. Run the phase you are on if
+  somebody is clearly there, then say you are not starting another chain tonight. **Do not begin an
+  unattended chain that will finish with a question nobody is awake to answer.**
+
+## What this skill must never do
+
+- **Never do a phase's work itself.** If `/plan` is next, invoke `/plan`. A router that starts planning
+  is a second planner nobody reviews.
+- **Never skip a gate because the answer looks obvious.** The gates are where the expensive mistakes get
+  caught.
+- **Never edit a spec, a plan or a ticket** — beyond correcting a status line that `git log` contradicts,
+  which you report in one line.
+- **Never advance an effort the user did not name when two are in flight.**
+
+## Dispatching the agents
+
+This skill spawns none. It invokes skills, and those skills dispatch their own agents.

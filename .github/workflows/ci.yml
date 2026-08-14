@@ -81,3 +81,26 @@ jobs:
             console.log(`checked ${docs.length} skill and agent definitions`)
             process.exit(bad)
           '
+
+      # A command is a slash command, so a missing description leaves it unexplained in /help.
+      - name: every command has a description, and forwards to a skill that exists
+        run: |
+          node -e '
+            const fs = require("fs"), path = require("path")
+            let bad = 0
+            const dir = "plugins/lifecycle/commands"
+            if (!fs.existsSync(dir)) { console.log("no commands"); process.exit(0) }
+            for (const name of fs.readdirSync(dir).filter((f) => f.endsWith(".md"))) {
+              const text = fs.readFileSync(path.join(dir, name), "utf8")
+              if (!(text.split("---")[1] ?? "").includes("description:")) {
+                console.error(`  x ${name} has no description`); bad = 1
+              }
+              // The command is a thin forwarder, so the skill it names must be real.
+              const m = text.match(/`([a-z-]+)` skill/)
+              if (m && !fs.existsSync(`plugins/lifecycle/skills/${m[1]}/SKILL.md`)) {
+                console.error(`  x ${name} forwards to skill "${m[1]}", which does not exist`); bad = 1
+              }
+              if (!bad) console.log(`  ok ${name}${m ? ` -> ${m[1]}` : ""}`)
+            }
+            process.exit(bad)
+          '

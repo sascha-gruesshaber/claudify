@@ -3,6 +3,7 @@
 
   "requires": {
     "skills/onboard/SKILL.md": ["edge-case-probe"],
+    "skills/workflow/SKILL.md": ["repo-config"],
     "skills/frame/SKILL.md": ["repo-config", "edge-case-probe", "criterion-quality", "agent-names"],
     "skills/grill/SKILL.md": ["repo-config", "edge-case-probe", "agent-names"],
     "skills/spec/SKILL.md": ["repo-config", "spec-shape", "criterion-quality", "tracker-limits", "agent-names"],
@@ -24,6 +25,7 @@
     "skills/spec/SKILL.md": ["model-choice", "file-handoff", "gates"],
     "skills/grill/SKILL.md": ["gates"],
     "skills/onboard/SKILL.md": ["repo-config", "gates", "tracker-limits"],
+    "skills/workflow/SKILL.md": ["gates", "agent-names"],
     "agents/change-reviewer.md": ["gates"],
     "agents/spec-reviewer.md": ["gates"],
     "agents/code-scout.md": ["gates"]

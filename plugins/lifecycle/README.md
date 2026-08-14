@@ -1,11 +1,14 @@
 # lifecycle
 
-A committed-spec engineering lifecycle for Claude Code. Eleven callable skills, six sub-agents.
+A committed-spec engineering lifecycle for Claude Code. Eleven callable skills, six sub-agents, one
+driver.
 
 ```
 /onboard                                    once per repo — writes .agents/
    │
 /frame ──▶ /grill ──▶ /spec ──▶ /plan ──▶ /plan-check ──▶ /build ──▶ a green branch
+   ╰────────────────── /advance ───────────────────────────────╯
+                   reads the state, runs what is next
 ```
 
 Called from inside the loop: `/tdd`, `/diagnose`, `/resolve-conflicts`.
@@ -13,13 +16,17 @@ Called from inside the loop: `/tdd`, `/diagnose`, `/resolve-conflicts`.
 ## Layout
 
 ```
+commands/
+└── advance.md            the /advance slash command — forwards to the workflow skill
+
 skills/
 ├── _shared/              one rule, one file — see its README
-│   ├── fragments/        13 rules: 10 law, 3 shape
+│   ├── fragments/        14 rules: 11 law, 3 shape
 │   ├── fragments.json    which document requires or forbids which
 │   └── tools/            sync + check, and their tests
 ├── onboard/              the setup ceremony
 │   └── templates/        the eight .agents/ files it writes
+├── workflow/             the driver — state on disk to the next phase
 ├── frame/ grill/ spec/   design
 ├── plan/ plan-check/     planning
 ├── build/                orchestration — prompts.md holds the lens catalogue
@@ -44,6 +51,18 @@ Three fragments carry that seam: `repo-config` (where the files are and that the
 configured). The other ten are law and ship inlined.
 
 CI fails the build if a concrete build command appears in any skill or agent.
+
+## `/advance`, and why it can exist at all
+
+Every artefact the lifecycle writes is **committed**, and the spec's `Status:` header is a state machine.
+So the answer to "what comes next" is already on disk, and `workflow` reads it: the status, whether
+`## Open` is empty, whether `plan.md` is current, the `Verdict:` line, the ticket statuses, `git log`.
+
+Nothing is inferred from the conversation, which is why it gives the same answer in a fresh session the
+next morning.
+
+It **halts at every phase that needs a person**, and a halt always names the next command. It never does
+a phase's work itself — a router that starts planning is a second planner nobody reviews.
 
 ## Two design choices worth knowing
 

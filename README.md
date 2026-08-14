@@ -38,6 +38,25 @@ reads. Nothing works until it has run — and that is deliberate.
 Each one also runs alone. Three more are called from inside the loop: **`/tdd`** (the red-green loop),
 **`/diagnose`** (a feedback loop before a theory), **`/resolve-conflicts`**.
 
+## Or just type `/advance`
+
+You do not have to remember the chain. Every artefact the lifecycle writes is committed, and the spec's
+`Status:` header is a state machine — so one skill can read where the work stands and run what comes
+next.
+
+```
+/advance          run the next phase, and keep going until a phase needs you
+/advance --dry    say where you are and what is next. Run nothing.
+/advance --once   run exactly one phase, then stop
+```
+
+It **halts at every phase that needs a person** — `/onboard`, `/frame`, `/grill`, and `/build`'s single
+go-ahead — and at a `Not ready` verdict, a loop cap, or a state it does not recognise. A halt always
+names the next command.
+
+It reads the state **off disk, never from the conversation**, so it works the same in a fresh session
+the next morning. `/workflow` is the same skill under its own name.
+
 **`/build` stops at a green branch.** Opening a review, posting questions on it and watching it are
 your repo's business, and they differ everywhere — `.agents/forge.md` records how it happens for you.
 
@@ -45,6 +64,7 @@ your repo's business, and they differ everywhere — `.agents/forge.md` records 
 
 | Skill | In | Out |
 |---|---|---|
+| `/advance` | whatever is on disk | the next phase, run |
 | `/onboard` | a repo | `.agents/`, eight files |
 | `/frame` | a ticket or a sentence | the facts, the size, the questions worth asking |
 | `/grill` | a rough idea | a settled design, glossary terms, decision records |
