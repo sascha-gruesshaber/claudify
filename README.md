@@ -140,15 +140,15 @@ The lifecycle spends model time deliberately, at the points where a mistake is c
 The bet is that one wrong plan costs more than all of it. If your change is small, take the fast path
 `/frame` will offer you.
 
-**You set the price.** `.agents/lifecycle.md` § *Effort and budget* fixes, per role, the **model tier**,
-the **reasoning effort** and a **soft output ceiling** — and `/onboard` asks you for all three. Four
-levers, in the order they actually move cost:
+**You set the price.** `.agents/lifecycle.md` § *Effort and budget* fixes, per role, the **model tier**
+and a **soft output ceiling**, and records which calls deserve a high-effort session — `/onboard` asks you
+for all of it. Four levers, in the order they actually move cost:
 
 | Lever | Where | Why it matters |
 |---|---|---|
 | **how many calls** | the lens list | six lenses cost three times two. By far the biggest lever. |
 | **which tier** | per role | a cheap tier where the brief already contains the shape |
-| **how much effort** | per role | separate from tier — the review lenses are where effort earns most |
+| **how much effort** | your session | the `Agent` tool has no effort parameter, so this is a session setting, not a per-call flag |
 | **the output ceiling** | per role | how long a report may run |
 
 The ceiling is **an instruction to the callee, not an enforced limit**, so it is written with a
@@ -183,7 +183,7 @@ Two things that are easy to get wrong:
 
 ## Status
 
-**v0.2.0 — early. Use it, but read the caveats.** All twelve skills, six agents and the fragment gate are
+**v0.5.0 — early. Use it, but read the caveats.** All twelve skills, six agents and the fragment gate are
 green, and `/lifecycle:advance` is verified on a real install.
 [`CONTRIBUTING.md`](CONTRIBUTING.md) lists what has **not** been proved yet — chiefly that `/build` has
 never run end to end. Read it before relying on this for something that matters.

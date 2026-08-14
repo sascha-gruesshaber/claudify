@@ -82,6 +82,20 @@ jobs:
             process.exit(bad)
           '
 
+      # The whole plugin exists because upstream skills carry this flag: it makes a skill
+      # un-invokable by the model, so /advance and /build stall and ask the user to type the next
+      # step. One line here protects the composition the lifecycle is built on.
+      - name: no skill blocks model invocation
+        run: |
+          hits=$(grep -rn "disable-model-invocation" plugins/*/skills plugins/*/commands 2>/dev/null || true)
+          if [ -n "$hits" ]; then
+            echo "$hits"
+            echo "A skill carrying disable-model-invocation cannot be called by another skill."
+            echo "That is the exact defect this plugin was built to escape. Remove it."
+            exit 1
+          fi
+          echo "clean — every skill is model-invocable"
+
       # A command is a slash command, so a missing description leaves it unexplained in /help.
       - name: every command has a description, and forwards to a skill that exists
         run: |

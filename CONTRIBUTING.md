@@ -38,6 +38,15 @@ grep -rniE 'dotnet|npm run|cargo|gradle|jira|azure|github\.com|sonar' plugins/li
 Every hit should be either an example clearly marked as one, or a sentence about how to *find* the real
 answer. A hit that reads as an instruction is a bug.
 
+## Never add `disable-model-invocation`
+
+**This plugin exists because upstream skills carry that flag.** It makes a skill un-invokable by the
+model, so a flow built on it stalls and asks the user to type the next command — which is exactly what
+`/advance` and `/build` cannot survive, since their whole shape is skills calling skills.
+
+CI fails the build if the string appears anywhere under `plugins/*/skills` or `plugins/*/commands`. If you
+ever vendor a skill in from elsewhere, **strip the flag as part of vendoring it.**
+
 ## Writing a skill here
 
 - **The frontmatter `description` is how the model decides to load it.** Write it for that: what it takes
@@ -74,6 +83,10 @@ but has not been *run*.
    is the most likely quality regression in this rewrite.
 5. **No repo has been onboarded twice.** The claim that `/onboard` is safe to re-run rests on the skill
    saying so.
+6. **The `Effort` column in `.agents/lifecycle.md` is intent, not a setting.** The `Agent` tool takes a
+   `model` but no effort parameter, so a skill dispatching through it cannot set effort. The column says
+   which calls deserve a high-effort *session*; the tier, the ceiling and the lens count are the levers
+   that actually pass.
 
 ## Adding a plugin to the marketplace
 

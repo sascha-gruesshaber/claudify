@@ -126,7 +126,20 @@ Two or three sentences: what is wrong or missing today, for whom, and why now. N
 ```
 
 **The header is fixed, not free-form.** It is the one place any skill looks to know where the work
-stands. `Specced` means designed and agreed, nothing built.
+stands, and **no skill re-derives state from a branch name or a directory listing.**
+
+| `**Status:**` | Means | Set by |
+|---|---|---|
+| `Specced` | designed and agreed, nothing built | `/spec`, when it commits |
+| `Building` | in flight; `**Wave:** n of m` says how far | `/build`, on the go-ahead and after each wave |
+| `Built` | the branch is green; `**Branch:**` carries the name | `/build`, at the end |
+| `Superseded by <path>` | a later spec replaced this one | whoever wrote the replacement |
+
+**A stale header is worse than no header, because the next run trusts it.** `Superseded by` is the one
+that gets forgotten: a spec replaced by a later one and left at `Specced` is a spec `/advance` will
+happily pick up and plan.
+
+Anything beyond this table is not a status. Do not invent one.
 
 **`## Decisions` carries the rejected alternatives**, or the design gets relitigated in three months.
 A decision with no live alternative is not a decision; leave it out.

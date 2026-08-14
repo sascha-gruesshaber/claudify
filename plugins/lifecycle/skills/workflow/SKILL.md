@@ -62,7 +62,8 @@ In this order, and **say which rule matched** in one line:
 
 1. **A path in the argument.** A spec file, or the directory holding one.
 2. **The current branch name.** `.agents/naming.md` maps a branch to its effort directory.
-3. **The most recently modified effort directory** whose spec is not `Built`.
+3. **The most recently modified effort directory** whose spec is neither `Built` nor
+   `Superseded by <path>`.
 4. **Nothing found** → there is no work in flight. Say so and offer `/frame`.
 
 **Two efforts in flight and no argument is an ambiguity, not a guess.** List them with their statuses
@@ -111,6 +112,7 @@ Read top to bottom and take the first row that matches.
 | `Verdict: Ready to build`, `Status: Specced` | `/build` | **halt at its go-ahead** |
 | `Status: Building` | `/build` — it resumes itself | continue |
 | `Status: Built` | — | **halt** — name this repo's ship step from `.agents/forge.md` |
+| `Status: Superseded by <path>` | — | **halt** — say so, and offer to advance the spec it names instead |
 
 **A phase `.agents/lifecycle.md` turns off is skipped, and you say you skipped it.** That file is the
 authority on which phases exist here; a repo that does not use `/plan-check` should not be told it is

@@ -27,6 +27,17 @@ git worktree add -b <branch> .claude/worktrees/<branch with / → +> <default-br
 - **Never remove a worktree you did not create.** Somebody else's half-finished work looks exactly like
   a stale directory.
 
+**A tool may resolve your path against the wrong tree, and say nothing.** Anything running outside your
+shell — an MCP server, a language server, a scanner — resolves a relative path against **the directory it
+started in**, which is the main checkout, not your worktree. It then reports on the *unmodified* file with
+no error and no hint, which reads exactly like "my fix did not work".
+
+- **Pass a path that is correct from the main checkout**: `.claude/worktrees/<name>/<path>`. A bare
+  worktree-relative path is the trap.
+- **Spot it by the line numbers.** If a reported range matches the file *before* your change, the tool
+  read the other tree.
+- **The fallback is a throwaway copy inside the main checkout**, analysed and then deleted.
+
 **Say the path once, in one line.** Everything after that happens there, and a reader who does not know
 where they are will look for their files in the main checkout.
 <!-- shared:worktree:end -->
@@ -59,7 +70,7 @@ This is the line that lets one plugin serve many repos.
 
 | Class | Resolved | Fragments |
 |---|---|---|
-| **law** — true in any repo | at author time, inlined into the shipped file | `worktree`, `evidence-before-claims`, `agent-report-contract`, `criterion-quality`, `edge-case-probe`, `no-prejudging`, `spec-shape`, `uncertainty-signal`, `model-choice`, `file-handoff` |
+| **law** — true in any repo | at author time, inlined into the shipped file | `worktree`, `evidence-before-claims`, `agent-report-contract`, `criterion-quality`, `edge-case-probe`, `no-prejudging`, `spec-shape`, `uncertainty-signal`, `model-choice`, `file-handoff`, `agent-names`, `budget` |
 | **shape** — true only in one repo | at run time, by reading `.agents/` in the consumer | `repo-config`, `gates`, `tracker-limits` |
 
 A shape fragment carries **no commands**. It carries the instruction to read the file that has them,

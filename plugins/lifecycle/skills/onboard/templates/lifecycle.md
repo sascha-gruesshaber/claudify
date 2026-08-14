@@ -53,7 +53,7 @@ What a single call is allowed to cost. **Wave width and the lens count move cost
 does** — and a cheap tier on design-carrying work usually costs *more*, because it takes two or three
 times the turns. Narrow the work before you downgrade it.
 
-| Role | Model | Effort | Soft output ceiling |
+| Role | Model | Effort* | Soft output ceiling |
 |---|---|---|---|
 | `code-scout` — locate code, cite `path:line` | sonnet | low | 800 |
 | `spec-reviewer` — one lens on a spec | sonnet | medium | 400 |
@@ -65,6 +65,15 @@ times the turns. Narrow the work before you downgrade it.
 | `finding-fixer` — a triaged list | sonnet | medium | 300 |
 | `finding-fixer` — the whole-feature sweep | opus | high | 400 |
 | `operator-view` | sonnet | low | 1 line |
+
+***Effort is only settable where the harness exposes it.*** The `Agent` tool takes a `model` but **no
+effort parameter**, so a skill dispatching through it cannot set effort — the agent inherits the
+session's. Effort is real in a `Workflow` script, and it is real as *your* session setting. Treat the
+column as intent: it says which calls deserve a high-effort session, not a flag anybody can pass.
+
+**Do not work around it with a duplicate agent definition per effort level.** That trick exists
+upstream and was rejected: it costs a byte-identical copy of every role plus a check to keep the two in
+step. Use the tier, the ceiling and the lens count — those three are all actually settable.
 
 **Ceilings are in output tokens, and they are soft.** A callee that cannot finish inside its ceiling
 returns `reviewer-uncertainty` and says what it did not reach. **It never returns a shallow pass that
