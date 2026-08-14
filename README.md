@@ -183,8 +183,9 @@ Two things that are easy to get wrong:
 
 ## Status
 
-**v0.5.0 — early. Use it, but read the caveats.** All twelve skills, six agents and the fragment gate are
-green, and `/lifecycle:advance` is verified on a real install.
+**v0.6.0 — early, and now partly proven.** All thirteen skills, six agents and the fragment gate are green.
+`/onboard` has been run on a real foreign repo (this one) and re-run without changing a byte; a review
+lens has been shown to catch a planted violation; `/lifecycle:advance` is verified on a real install.
 [`CONTRIBUTING.md`](CONTRIBUTING.md) lists what has **not** been proved yet — chiefly that `/build` has
 never run end to end. Read it before relying on this for something that matters.
 

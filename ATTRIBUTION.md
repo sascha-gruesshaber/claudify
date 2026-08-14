@@ -7,7 +7,7 @@ and no upgrade path** — refreshing means re-reading a source and deciding agai
 
 | Source | What it is | Licence |
 |---|---|---|
-| **`cm-agentic`** | a private sibling project at the same company, solving the same problem for a 28-repository estate. **The largest single source here.** | private |
+| **`a big private  .NET repo`** | a private sibling project at the same company, solving the same problem for a 28-repository estate. **The largest single source here.** | private |
 | **`superpowers`** | [obra/superpowers](https://github.com/obra/superpowers) | MIT |
 | **`mattpocock-skills`** | Matt Pocock's Claude Code skill collection | public |
 | **a private .NET monorepo** | where this lifecycle was assembled and used daily for months | private |
@@ -17,16 +17,16 @@ and no upgrade path** — refreshing means re-reading a source and deciding agai
 
 | Idea | From | Landed in |
 |---|---|---|
-| A spec states WHAT and may never name a class; a plan states HOW | cm-agentic | `fragments/spec-shape.md`, `spec` |
-| Permanently numbered requirements — append, never insert, `~~withdrawn~~` never reused | cm-agentic | `fragments/spec-shape.md` |
-| The rules for a criterion that can actually be settled | cm-agentic | `fragments/criterion-quality.md` |
-| The seven-category edge-case sweep, and "every one is a question or a written assumption" | cm-agentic | `fragments/edge-case-probe.md`, `frame` |
-| Scout the code before planning; every plan claim carries a `path:line` somebody opened | cm-agentic | `plan`, `code-scout` |
-| Review the plan before building; verify each claim with the command you ran | cm-agentic | `plan-check` |
-| Uncertainty as a routable signal from a closed set | cm-agentic | `fragments/uncertainty-signal.md` |
-| Unrequested behaviour is a defect in its own right | cm-agentic | `change-reviewer` |
-| **Shared rule files injected as managed regions, with a checker** | cm-agentic | `skills/_shared/`, `tools/skills.mjs` |
-| The checker needs a negative control, or there is no evidence it can fail | cm-agentic | `tools/skills.test.mjs` |
+| A spec states WHAT and may never name a class; a plan states HOW | a big private  .NET repo | `fragments/spec-shape.md`, `spec` |
+| Permanently numbered requirements — append, never insert, `~~withdrawn~~` never reused | a big private  .NET repo | `fragments/spec-shape.md` |
+| The rules for a criterion that can actually be settled | a big private  .NET repo | `fragments/criterion-quality.md` |
+| The seven-category edge-case sweep, and "every one is a question or a written assumption" | a big private  .NET repo | `fragments/edge-case-probe.md`, `frame` |
+| Scout the code before planning; every plan claim carries a `path:line` somebody opened | a big private  .NET repo | `plan`, `code-scout` |
+| Review the plan before building; verify each claim with the command you ran | a big private  .NET repo | `plan-check` |
+| Uncertainty as a routable signal from a closed set | a big private  .NET repo | `fragments/uncertainty-signal.md` |
+| Unrequested behaviour is a defect in its own right | a big private  .NET repo | `change-reviewer` |
+| **Shared rule files injected as managed regions, with a checker** | a big private  .NET repo | `skills/_shared/`, `tools/skills.mjs` |
+| The checker needs a negative control, or there is no evidence it can fail | a big private  .NET repo | `tools/skills.test.mjs` |
 | A ledger naming its own spec on line 1, so a compacted run resumes | superpowers | `build` step 1 |
 | Hand briefs and diffs over as file paths; the agent returns a status line | superpowers | `fragments/file-handoff.md` |
 | Four agent statuses, each with a written handler | superpowers | `fragments/agent-report-contract.md` |
@@ -49,15 +49,15 @@ in six months.
 
 | Idea | From | Why not |
 |---|---|---|
-| Specs, plans and reports in a gitignored scratch directory | cm-agentic | Their own docs list the cost: per-machine, unshareable, **no history** — so their own "was the spec weakened to fit the code?" check cannot run at all. Ours are committed and move through review. |
-| A 1,593-line orchestrator prompt | cm-agentic | A fixed context cost on every turn of a long run. `build` does most of the same job in a fraction of it. |
-| The incident behind each rule, inline with the rule | cm-agentic | Excellent as a record, expensive as a prompt. A fragment states the law; commit messages hold the reasoning. |
-| A multi-model review panel resolved from a rigor matrix | cm-agentic | Built for a 28-repository estate with a second model family available. **Revisit if a second engine is ever in play.** |
-| **Two agent definitions per role, to move the effort axis** | cm-agentic | A workaround for the `Agent` tool having no effort parameter. Costs a byte-identical duplicate of every role plus a check to police it. `.agents/lifecycle.md` records the intent instead, and says so plainly. |
+| Specs, plans and reports in a gitignored scratch directory | a big private  .NET repo | Their own docs list the cost: per-machine, unshareable, **no history** — so their own "was the spec weakened to fit the code?" check cannot run at all. Ours are committed and move through review. |
+| A 1,593-line orchestrator prompt | a big private  .NET repo | A fixed context cost on every turn of a long run. `build` does most of the same job in a fraction of it. |
+| The incident behind each rule, inline with the rule | a big private  .NET repo | Excellent as a record, expensive as a prompt. A fragment states the law; commit messages hold the reasoning. |
+| A multi-model review panel resolved from a rigor matrix | a big private  .NET repo | Built for a 28-repository estate with a second model family available. **Revisit if a second engine is ever in play.** |
+| **Two agent definitions per role, to move the effort axis** | a big private  .NET repo | A workaround for the `Agent` tool having no effort parameter. Costs a byte-identical duplicate of every role plus a check to police it. `.agents/lifecycle.md` records the intent instead, and says so plainly. |
 | Plans that inline the code for every step | superpowers | Goes stale the moment the repo moves, and the implementer writes it better than the planner guesses it. A task names behaviour, file, seam and verify command. |
 | Never run implementers in parallel | superpowers | They forbid it because of conflicts. **A worktree per ticket removes the conflict**, so waves run up to three. |
 | A local companion server for live visual feedback | superpowers | Artifacts plus paste-back first. This is the **named upgrade** when paste-back grates — MIT, zero dependencies. `show` says so at the bottom. |
-| A 0–5 scorecard over the estate | cm-agentic | They built it, ran it, and **deleted it**: a number gets quoted without the evidence behind it. Do not rebuild it. |
+| A 0–5 scorecard over the estate | a big private  .NET repo | They built it, ran it, and **deleted it**: a number gets quoted without the evidence behind it. Do not rebuild it. |
 | Baking the forge into the build orchestrator | — | Review mechanics differ per host and per team more than anything else in the flow. `build` stops at a green branch on purpose. |
 
 ## The fact that caused all of it

@@ -60,6 +60,23 @@ ever vendor a skill in from elsewhere, **strip the flag as part of vendoring it.
 - **A rule that appears in two skills belongs in a fragment.** That is not a style preference; two copies
   drift and nothing detects it.
 
+## A change here does not affect the session that made it
+
+**Skills load from the installed copy**, at `~/.claude/plugins/cache/claudify/lifecycle/<version>/` —
+not from your worktree. So editing a `SKILL.md` changes nothing about the session you are editing in, and
+`skills.mjs check` passing proves the *files* are consistent, never that the *behaviour* you changed
+works.
+
+To actually see a behaviour change, bump both versions and reinstall:
+
+```bash
+/plugin marketplace update claudify
+/plugin install lifecycle@claudify
+```
+
+**Say which of the two you did.** "CI is green" and "I watched the new behaviour run" are different
+claims, and only the second is evidence for a behaviour change.
+
 ## Versioning
 
 Each plugin carries its own `version` in `.claude-plugin/plugin.json` **and** in the marketplace's
@@ -71,19 +88,23 @@ a plugin whose manifest moved without its marketplace entry never reaches anybod
 Read this before relying on the plugin for work that matters. Each line is a thing that is *designed*
 but has not been *run*.
 
-1. **Cross-skill calls across the plugin boundary.** The lifecycle's whole shape is skills calling
-   skills — `/build` calls `/plan`, `/plan` calls `/plan-check`, `ticket-implementer` calls `/tdd`.
-   Inside one plugin this should hold, but it has not been exercised end to end. **Test this first.**
-2. **`/build` has never run.** It is the largest skill here and it orchestrates five agent types across
-   parallel worktrees. Expect the first real run to find things.
-3. **`/onboard` has never run against a repo it did not come from.** The observation table is written
-   from what CI files usually look like, not from a sample.
-4. **The lens catalogue is now generic.** Each body reads its standard out of `.agents/` rather than
-   naming one. Whether that keeps a reviewer as sharp as a repo-specific body did is untested, and it
-   is the most likely quality regression in this rewrite.
-5. **No repo has been onboarded twice.** The claim that `/onboard` is safe to re-run rests on the skill
-   saying so.
-6. **The `Effort` column in `.agents/lifecycle.md` is intent, not a setting.** The `Agent` tool takes a
+1. ~~Cross-skill calls across the plugin boundary.~~ **Proven** — `/onboard` chained to `/frame`, and
+   `/build` resolves `/plan` and `/plan-check` by name.
+2. ~~`/onboard` against a repo it did not come from.~~ **Proven** — run on this repo. It read the CI
+   definition, mapped all eight steps to line numbers, wrote `NOT CONFIGURED` three times rather than
+   inventing, and found two hazards nobody had written down.
+3. ~~The lens catalogue is now generic.~~ **Proven** — the `repo standards` lens, given only
+   `.agents/docs.md`, caught a planted duplicated rule with the rule quoted and the correct fix, and
+   caught a real mirror-instead-of-link violation nobody had noticed.
+4. ~~`/onboard` is safe to re-run.~~ **Proven** — a second run was byte-identical, refused to overwrite,
+   and reported a stale count as a note rather than silently editing.
+5. **A clean review still costs a judgement call.** The reviewers now return `clean` plus at most three
+   lines of what they checked. The cap is an instruction, and nothing enforces it.
+6. **`/build` has never run end to end.** Everything before it is now exercised: `/onboard` on a foreign
+   repo, a second `/onboard` that changed nothing, a cross-plugin skill call, and a review lens that
+   caught a planted violation *and* a real one. `/build` is the remaining unknown, and it is the largest
+   skill here.
+7. **The `Effort` column in `.agents/lifecycle.md` is intent, not a setting.** The `Agent` tool takes a
    `model` but no effort parameter, so a skill dispatching through it cannot set effort. The column says
    which calls deserve a high-effort *session*; the tier, the ceiling and the lens count are the levers
    that actually pass.

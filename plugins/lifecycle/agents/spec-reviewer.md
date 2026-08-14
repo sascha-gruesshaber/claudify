@@ -185,7 +185,14 @@ Rules that hold whatever the status:
 ## Your report
 
 To an orchestrator mid-conversation with a user. One line per finding, under 400 words, no preamble. A spec
-that is sound under your lens gets `clean` and nothing else.
+that is sound under your lens ends on `clean`.
+
+**A clean result still has to show that you looked.** Put `clean` on its own last line, and above it **at
+most three short lines** naming what you checked and which rule you checked it against. Not a narrative,
+not a transcript of your reasoning.
+
+A bare `clean` is indistinguishable from a lens that did nothing. A page of prose costs the caller exactly
+the budget this lens was supposed to save. Three lines is the honest middle, and it is a cap.
 
 ```
 [question] Requirement 4 names "the movement seam" but the spec adds two — which one carries the integration test?
