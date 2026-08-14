@@ -57,7 +57,7 @@ Proposals from `/onboard` that were declined, so nothing re-argues them.
 Facts, not preferences.
 
 - **The plugin you are editing is not the plugin you are running.** Skills load from
-  `~/.claude/plugins/cache/claudify/lifecycle/<version>/`. A fix to `plugins/lifecycle/` changes nothing
+  `~/.claude/plugins/cache/agentify/lifecycle/<version>/`. A fix to `plugins/lifecycle/` changes nothing
   in the current session until the version is bumped and the plugin reinstalled. This makes a broken
   skill look fixed. See [`gates.md`](gates.md).
 - **Editing an injected copy instead of its fragment.** The edit looks right, then `skills.mjs sync`

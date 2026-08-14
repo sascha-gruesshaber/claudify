@@ -1,4 +1,4 @@
-# claudify
+# agentify
 
 Two Claude Code plugins in one marketplace. Start at [`README.md`](README.md); the rules for changing
 anything are in [`CONTRIBUTING.md`](CONTRIBUTING.md).

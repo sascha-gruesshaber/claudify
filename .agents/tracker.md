@@ -3,7 +3,7 @@
 ## There is no issue tracker
 
 - **Tracker:** **none.** GitHub Issues is **disabled** on this repository — `gh issue list` returns
-  *"the 'sascha-gruesshaber/claudify' repository has disabled issues"*.
+  *"the 'sascha-gruesshaber/agentify' repository has disabled issues"*.
 - **Nothing is ever written to any board.** There is no board. No skill claims a ticket, posts a
   comment, or moves a status. If a future run finds a tracker, it stops and asks rather than writing.
 - **Ticket keys do not exist here.** Every place the plugin's naming grammar offers `<KEY>-<short-desc>`,

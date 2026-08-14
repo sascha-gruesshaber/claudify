@@ -19,7 +19,7 @@ They are also readable by a human in five minutes, which is the other reason the
 ## One thing that is specific to this repo
 
 **This repository is the source of the `lifecycle` plugin, and the plugin these files configure is the
-*installed* copy under `~/.claude/plugins/cache/claudify/lifecycle/<version>/`.** Editing anything under
+*installed* copy under `~/.claude/plugins/cache/agentify/lifecycle/<version>/`.** Editing anything under
 `plugins/lifecycle/` does not change the behaviour of the session doing the editing. See
 [`gates.md`](gates.md) § *Where a local run is weaker than CI* and
 [`working-agreement.md`](working-agreement.md) § *Known traps*.

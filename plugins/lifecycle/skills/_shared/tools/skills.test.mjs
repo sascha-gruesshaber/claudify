@@ -8,7 +8,7 @@ import { readFragments, regionsIn, run, syncText, targets } from './skills.mjs'
 
 // A fixture plugin tree: skills/ and agents/ beside a _shared/fragments directory.
 function fixture() {
-  const root = mkdtempSync(join(tmpdir(), 'claudify-'))
+  const root = mkdtempSync(join(tmpdir(), 'agentify-'))
   mkdirSync(join(root, 'skills', '_shared', 'fragments'), { recursive: true })
   mkdirSync(join(root, 'agents'), { recursive: true })
   return root

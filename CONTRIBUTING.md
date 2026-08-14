@@ -1,4 +1,4 @@
-# Contributing to claudify
+# Contributing to agentify
 
 ## The one rule
 
@@ -62,7 +62,7 @@ ever vendor a skill in from elsewhere, **strip the flag as part of vendoring it.
 
 ## A change here does not affect the session that made it
 
-**Skills load from the installed copy**, at `~/.claude/plugins/cache/claudify/lifecycle/<version>/` —
+**Skills load from the installed copy**, at `~/.claude/plugins/cache/agentify/lifecycle/<version>/` —
 not from your worktree. So editing a `SKILL.md` changes nothing about the session you are editing in, and
 `skills.mjs check` passing proves the *files* are consistent, never that the *behaviour* you changed
 works.
@@ -70,8 +70,8 @@ works.
 To actually see a behaviour change, bump both versions and reinstall:
 
 ```bash
-/plugin marketplace update claudify
-/plugin install lifecycle@claudify
+/plugin marketplace update agentify
+/plugin install lifecycle@agentify
 ```
 
 **Say which of the two you did.** "CI is green" and "I watched the new behaviour run" are different

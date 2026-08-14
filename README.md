@@ -1,4 +1,4 @@
-# claudify
+# agentify
 
 Two Claude Code plugins, in one marketplace.
 
@@ -10,9 +10,9 @@ Two Claude Code plugins, in one marketplace.
 ## Install
 
 ```bash
-/plugin marketplace add sascha-gruesshaber/claudify
-/plugin install lifecycle@claudify
-/plugin install plain-words@claudify
+/plugin marketplace add sascha-gruesshaber/agentify
+/plugin install lifecycle@agentify
+/plugin install plain-words@agentify
 ```
 
 Then, in the repo you want to use it in:

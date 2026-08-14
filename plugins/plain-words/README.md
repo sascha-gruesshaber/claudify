@@ -20,7 +20,7 @@ style does not.
 **As the session default** — install the output style that ships with it:
 
 ```bash
-cp ~/.claude/plugins/cache/claudify/plain-words/*/output-styles/plain-words.md ~/.claude/output-styles/
+cp ~/.claude/plugins/cache/agentify/plain-words/*/output-styles/plain-words.md ~/.claude/output-styles/
 ```
 
 Then pick it with `/output-style`.

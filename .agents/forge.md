@@ -5,7 +5,7 @@
 ## The host
 
 - **Host:** GitHub, public repository
-- **Remote:** `https://github.com/sascha-gruesshaber/claudify.git`
+- **Remote:** `https://github.com/sascha-gruesshaber/agentify.git`
 - **Default branch:** `main` · **Release branches:** none — trunk-based
 - **CLI:** `gh` at `/opt/homebrew/bin/gh`, authenticated for account `sascha-gruesshaber` from the
   macOS keyring. Token scopes: `gist`, `read:org`, `repo`, `workflow` — enough to open a pull request
@@ -31,7 +31,7 @@ gh pr create --base main --title "<type>(<scope>): <what the change achieves>" -
 
 ```bash
 gh pr view <n> --comments
-gh api repos/sascha-gruesshaber/claudify/pulls/<n>/comments    # line-anchored review comments only
+gh api repos/sascha-gruesshaber/agentify/pulls/<n>/comments    # line-anchored review comments only
 ```
 
 Two resources, two answers: `gh pr view --comments` shows the conversation thread, the `pulls/<n>/comments`
@@ -51,7 +51,7 @@ rule it enforces — read the step name before reading your own diff.
 
 ## Branch policies that block a merge
 
-**None.** `gh api repos/sascha-gruesshaber/claudify/branches/main/protection` returns
+**None.** `gh api repos/sascha-gruesshaber/agentify/branches/main/protection` returns
 `404 Branch not protected`.
 
 | Policy | Threshold |
