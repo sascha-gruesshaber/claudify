@@ -1,0 +1,89 @@
+---
+name: resolve-conflicts
+description: Resolve an in-progress git merge or rebase conflict by finding out why each side made its change, rather than by picking a side. Use when a merge or rebase has stopped with conflicts, when a review reports a merge conflict, or when someone says "fix the conflicts", "this won't merge". Keywords - merge conflict, rebase conflict, conflicts, won't merge, resolve conflicts, both modified, HEAD marker.
+---
+
+# Resolve conflicts
+
+A conflict is two intents meeting. Resolve it by finding out what each side wanted, never by taking
+whichever half looks tidier.
+
+## The loop
+
+1. **See the state.** `git status`, `git log --oneline --left-right --merge`, and the conflicting files.
+   Know whether you are mid-merge or mid-rebase — the finish differs.
+
+2. **Find the primary source for each side.** Read the commit messages, and where a side came from a
+   feature branch, its spec and its review thread. **Understand why the change was made** before touching
+   a hunk.
+
+3. **Resolve each hunk. Preserve both intents where you can.** Where they are genuinely incompatible, take
+   the one matching the stated goal of the merge and **say what the trade-off was** in your report.
+   **Never invent new behaviour** in a conflict resolution — it arrives in a diff nobody reviewed against
+   a spec, which is the least visible place in the whole flow to add something.
+
+4. **Never `--abort`.** Always resolve. An abort loses the analysis you just did and the next attempt
+   starts cold.
+
+5. **Run the gates**, and fix whatever the merge broke rather than whatever you notice.
+
+6. **Finish it.** Stage everything and commit; if rebasing, continue until every commit is replayed.
+
+## The three that are not a judgement call
+
+`.agents/gates.md` names the first two for this repo. All three conflict for structural reasons:
+
+- **A generated file.** Never hand-merge it. Take either side, re-run the command that generates it, and
+  commit what it writes.
+- **An append-heavy manifest** — a public-API list, an index, a changelog. The resolution is almost always
+  **keep both lines**, in the order the file already uses.
+- **A lockfile.** Regenerated, not merged. Take one side, run the install command, commit the result.
+
+## Then
+
+<!-- shared:gates:start source=gates.md -->
+**Run the gates the way CI runs them, before you claim anything passes.** They are recorded in
+`.agents/gates.md`, at the repository root — the commands, their order, and which of them a local run
+weakens. Read that file; do not reconstruct the gate from what you see in the tree.
+
+- **Run them in the order given.** A formatter after a build check wastes the check, and most orders are
+  written down because somebody already lost an hour to the other one.
+- **A local command that is not the CI command is not the gate.** Where `.agents/gates.md` says a local
+  invocation is softer than CI's — warnings not fatal, a subset of projects, coverage not measured — run
+  the CI form or say which one you ran.
+- **Generated files are built once, at integration.** `.agents/gates.md` names them. Never regenerate one
+  inside a per-ticket worktree; every parallel tree would rewrite the same file.
+- **A gate that fails for a reason outside this change is not yours to work around.** Say so and stop.
+- **When a gate fails in a way that makes no sense**, read the troubleshooting document
+  `.agents/gates.md` points at before debugging your own code.
+
+If `.agents/gates.md` is missing, run the repo's obvious test and build commands, **say which you chose
+and that they were not configured**, and do not claim CI parity.
+<!-- shared:gates:end -->
+
+<!-- shared:evidence-before-claims:start source=evidence-before-claims.md -->
+**If you have not run the command in this message, you cannot say it passes.**
+
+Before any statement that work is done, fixed, passing or ready:
+
+1. Name the command that would prove the claim.
+2. Run it in full. Not a subset, not a remembered earlier run.
+3. Read the whole output and the exit code.
+4. State the claim **with** the evidence, or state what actually happened.
+
+| Claim | What proves it | What does not |
+|---|---|---|
+| tests pass | the test command's output, 0 failures | a previous run, "should pass" |
+| build succeeds | exit 0 from the build | the linter passing |
+| lint clean | the linter's output, 0 errors | a partial check |
+| the bug is fixed | the original symptom, retested | the code changed |
+| the agent finished | `git diff` / `git log` in its tree | the agent reporting success |
+| the requirement is met | that requirement checked by name | the suite being green |
+
+**Report what happened, not what you hoped.** A failing gate is reported with its output. A skipped step
+is reported as skipped. Words that imply success without evidence — "should", "probably", "looks
+right" — are the same violation as claiming it outright.
+<!-- shared:evidence-before-claims:end -->
+
+**Report which hunks you resolved against which intent**, and name every trade-off you took. A conflict
+resolved silently is a decision nobody can find later.

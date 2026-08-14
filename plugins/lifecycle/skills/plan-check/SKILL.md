@@ -1,0 +1,206 @@
+---
+name: plan-check
+description: Adversarially review an implementation plan before anyone builds it — open every path the plan cites, verify every claim it makes about the repository with a command, check it against the spec and the repo's own rules, and return a Ready / Ready with changes / Not ready verdict. Read-only; it judges a plan and never revises one. Use before starting a build, on a plan written days ago, or on one somebody else wrote. Keywords - plan check, review the plan, is this plan sound, safe to start, sanity check the plan, verify the claims, not ready.
+---
+
+# Plan check (a plan → a verdict)
+
+Review a plan **before it is built**, the way a code review works after.
+
+> **A plan is the only artefact in the flow with no independent review.** Code gets a per-ticket pass
+> and a whole-feature sweep; the plan every one of them is measured against was written once, by one
+> model, and read once by a human seeing it for the first time. That is backwards. A wrong plan is the
+> cheapest thing here to fix and the most expensive to miss, because everything after it is built
+> correctly on top of the mistake.
+
+A plan is a **prediction, and nothing compiles it.** Its claims about the codebase are true when written
+and quietly rot. So this skill spends its effort on the one thing a reader cannot do quickly by eye:
+**checking the plan's assertions against the repository as it is now.**
+
+<!-- shared:repo-config:start source=repo-config.md -->
+**This repo describes itself in `.agents/`, at the repository root. Read the files that bind your step,
+and treat them as authority over anything you would otherwise assume.**
+
+| File | Answers |
+|---|---|
+| `.agents/lifecycle.md` | which phases run, which review lenses are in use, how many rounds each loop gets, how wide a wave may be |
+| `.agents/gates.md` | the commands that must pass, in order, and what "green" means here |
+| `.agents/tracker.md` | where specs and tickets live, and what may be written to the board |
+| `.agents/forge.md` | the git host, and how a branch becomes a reviewed change |
+| `.agents/docs.md` | where architecture truth lives, the glossary, and what "docs are part of done" costs |
+| `.agents/naming.md` | branch, commit, directory and test-name grammar |
+| `.agents/working-agreement.md` | working hours, what may run unattended, how to report, when to stop and ask |
+
+Three rules:
+
+- **A missing file is a real answer: that thing is not configured here.** Say so in one line and take
+  the safest reading — do not invent the repo's conventions, and do not fall back on another project's.
+  If the whole directory is absent, stop and tell the user to run `/onboard` instead of guessing.
+- **`.agents/` beats your own judgement, and loses to the user.** It was written deliberately, so a rule
+  you disagree with is reported once, not routed around.
+- **Read only what your step needs.** Every line costs on every turn of a long run.
+<!-- shared:repo-config:end -->
+
+## When NOT to use
+
+- To review code that exists → the review lenses in [`build`](../build/SKILL.md).
+- On a change too small to have had a plan.
+- To settle an open design question the plan rests on → [`grill`](../grill/SKILL.md) first. A plan
+  review cannot tell you what the user wanted.
+
+## Step 1 — Read both documents
+
+The plan and **the spec it argues from**. The spec is the binding authority; the plan is its argument.
+Where they disagree, the spec wins and the disagreement is a finding.
+
+## Step 2 — Send the lenses
+
+Spawn [`change-reviewer`](../../agents/change-reviewer.md) once per axis below, **all in one message**,
+each on `sonnet` unless the plan touches auth, tenancy, migrations, permissions or a wire contract —
+then the coverage and risk axes go to `opus`.
+
+Hand each one the plan path and the spec path. **Never paste either into the prompt.**
+
+<!-- shared:no-prejudging:start source=no-prejudging.md -->
+**Never tell a reviewer what not to flag.** If the prompt you are writing contains "do not flag", "don't
+treat X as a defect", "at most Minor", or "the spec chose this" — stop. You are pre-judging, and the
+reason is almost always to spare yourself a review round.
+
+Let the reviewer raise it. Adjudicate it afterwards, in the open, and record the ruling.
+
+Two rules that follow:
+
+- **Do not add open-ended directives** — "check all uses", "run the race tests if useful" — without a
+  concrete, task-specific reason. They cost a reviewer's whole budget and return nothing.
+- **Do not ask a reviewer to re-run tests the implementer already ran on the same code.** The
+  implementer's report carries that evidence.
+
+**Triage is the caller's job, not the reviewer's.** A reviewer that filters while it looks leaves buckets
+empty for the wrong reason: cover first, filter second, and judge severity as a separate pass over a list
+that already exists.
+<!-- shared:no-prejudging:end -->
+
+## The eight axes
+
+1. **Coverage.** The plan delivers the spec in full. Name anything the spec asks for that no task
+   touches. A plan silent about part of its spec has not deferred that part — it has lost it.
+
+2. **Claims about the codebase.** A plan is mostly assertions: this file exists, that handler is the
+   template, this behaviour is missing, there are five call sites. **Every one is checkable, and you are
+   the last person who can check them cheaply.** Open every `path:line` the plan cites. Report each
+   claim with **the command you ran and what it printed**. Pay particular attention to:
+   - *"already exists" / "already implemented"* — if true the task should not exist; if false the plan
+     is missing work;
+   - *counts* — "the five sites" that nobody confirmed should have read "every site";
+   - *negative claims* — "nothing else calls this" needs a repository-wide search, and these are the
+     assertions most often carried over from a stale reading.
+
+3. **Convention compliance.** Against **this** repository's rules, not a generic standard — everything
+   `.agents/docs.md` names: the glossary, the conventions, the documented seams, the accepted decisions.
+   A documented seam and an accepted decision are **constraints, not suggestions.**
+
+4. **Executability.** Every task names its files and how it will be verified. No placeholders —
+   "implement the handler" is not a task and `TODO` in a plan is a defect. Every command runnable as
+   written, with no machine-specific path and no credential that will not exist elsewhere.
+
+5. **Sequencing and interfaces.** Task N can run once N−1 is done, and each task leaves the tree
+   building. **Cross-check every `Consumes` against the matching `Produces`** — a name or a type that
+   does not line up is the conflict that shows up at integration, and it is free to find here.
+
+6. **Risk and blast radius.** Migrations, permissions and tenancy, public contracts, message schemas,
+   deploy ordering, backward compatibility. Ask what happens if this ships half-applied, because sooner
+   or later something will.
+
+7. **Testability.** The tests the plan names actually observe the behaviour, at a seam that exists or
+   that the plan creates deliberately. Reject any test whose expected value is computed the way the code
+   computes it — it passes by construction and can never disagree with the implementation. Check the
+   plan clears the coverage floor in `.agents/gates.md`.
+
+8. **Scope.** Work the spec did not ask for, work it asked for that is missing, and work that
+   re-implements something the codebase already has. All three are findings, and **the third is the one
+   a plan review is uniquely placed to catch** — after implementation it just looks like code.
+
+## Step 3 — The conflict table
+
+Separately from the lenses, build one table yourself. It is cheap and it catches what per-axis review
+cannot see.
+
+- **One row for every pair of tasks that share a file or an interface** — the two tasks, what one
+  produces against what the other consumes, and what you found.
+- **One row for every task** — whether its own text agrees with itself: the tests it specifies against
+  the code it specifies, the files it creates against the files it later touches.
+
+**"The scan is clean" without those rows is not a scan you ran.** Write the table into the report even
+when every row says "no conflict".
+
+<!-- shared:evidence-before-claims:start source=evidence-before-claims.md -->
+**If you have not run the command in this message, you cannot say it passes.**
+
+Before any statement that work is done, fixed, passing or ready:
+
+1. Name the command that would prove the claim.
+2. Run it in full. Not a subset, not a remembered earlier run.
+3. Read the whole output and the exit code.
+4. State the claim **with** the evidence, or state what actually happened.
+
+| Claim | What proves it | What does not |
+|---|---|---|
+| tests pass | the test command's output, 0 failures | a previous run, "should pass" |
+| build succeeds | exit 0 from the build | the linter passing |
+| lint clean | the linter's output, 0 errors | a partial check |
+| the bug is fixed | the original symptom, retested | the code changed |
+| the agent finished | `git diff` / `git log` in its tree | the agent reporting success |
+| the requirement is met | that requirement checked by name | the suite being green |
+
+**Report what happened, not what you hoped.** A failing gate is reported with its output. A skipped step
+is reported as skipped. Words that imply success without evidence — "should", "probably", "looks
+right" — are the same violation as claiming it outright.
+<!-- shared:evidence-before-claims:end -->
+
+## Step 4 — The verdict
+
+Write `plan-check.md` beside the plan and commit it with the plan.
+
+```markdown
+**Date:** YYYY-MM-DD
+**Plan:** `<path to plan.md>`
+**Verdict:** Ready to build | Ready with changes | Not ready
+**Lenses:** coverage, claims, conventions, executability, sequencing, risk, testability, scope
+**Claims checked:** <n> confirmed · <n> contradicted · <n> could not verify
+
+## Blocking
+- <finding> — <task heading it lands on> — <what to do about it>
+
+## Changes to make first
+- ...
+
+## Claims
+| Claim | Command run | Result |
+|---|---|---|
+| "the handler is at X" | `rg -n "class X" src/` | confirmed, `src/…:120` |
+| "nothing else calls this" | `rg -n "Foo\(" -g '!**/obj/**'` | **contradicted** — 3 call sites |
+
+## Task conflicts
+| Tasks | Shared | Found |
+|---|---|---|
+
+## Not verified
+- <what nobody could check, and why>
+```
+
+**A finding cites a task heading, not a `file:line`.** The code does not exist yet.
+
+**A reviewer that verified nothing is a failed reviewer**, however well written its report. Checking
+claims against the repository is the axis this skill exists for; a lens that returned reasoning instead
+of evidence contributed neither. Say so in the report rather than counting it.
+
+**A contradicted claim is never a wording fix.** The plan asserted something false, so the reasoning
+resting on it has not been done — that area gets re-scouted, not re-worded.
+
+## Chat summary
+
+The verdict in the first line. Then the blocking count, the claim counts, and the single most expensive
+thing found. Then: `/build` on Ready, `/plan` again on Not ready.
+
+**The re-plan cap is in `.agents/lifecycle.md`** — typically one, then get a person. A plan that fails
+twice has something wrong with its premises, and a re-plan loop is unusually cheap to get stuck in.

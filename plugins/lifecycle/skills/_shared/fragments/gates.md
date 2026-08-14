@@ -1,0 +1,17 @@
+**Run the gates the way CI runs them, before you claim anything passes.** They are recorded in
+`.agents/gates.md`, at the repository root — the commands, their order, and which of them a local run
+weakens. Read that file; do not reconstruct the gate from what you see in the tree.
+
+- **Run them in the order given.** A formatter after a build check wastes the check, and most orders are
+  written down because somebody already lost an hour to the other one.
+- **A local command that is not the CI command is not the gate.** Where `.agents/gates.md` says a local
+  invocation is softer than CI's — warnings not fatal, a subset of projects, coverage not measured — run
+  the CI form or say which one you ran.
+- **Generated files are built once, at integration.** `.agents/gates.md` names them. Never regenerate one
+  inside a per-ticket worktree; every parallel tree would rewrite the same file.
+- **A gate that fails for a reason outside this change is not yours to work around.** Say so and stop.
+- **When a gate fails in a way that makes no sense**, read the troubleshooting document
+  `.agents/gates.md` points at before debugging your own code.
+
+If `.agents/gates.md` is missing, run the repo's obvious test and build commands, **say which you chose
+and that they were not configured**, and do not claim CI parity.

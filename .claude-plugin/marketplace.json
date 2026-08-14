@@ -1,0 +1,25 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "claudify",
+  "description": "A committed-spec engineering lifecycle for Claude Code, and the plain-words reporting style that goes with it.",
+  "owner": {
+    "name": "Sascha Grüßhaber",
+    "email": "sascha.gruesshaber@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "lifecycle",
+      "source": "./plugins/lifecycle",
+      "description": "The full ticket-to-green-branch lifecycle as callable skills: frame, grill, spec, plan, plan-check, build, plus tdd, diagnose and resolve-conflicts, and the five sub-agents they dispatch. Reads how your repo works from eight files under .agents/, written by /onboard.",
+      "version": "0.1.0",
+      "category": "workflow"
+    },
+    {
+      "name": "plain-words",
+      "source": "./plugins/plain-words",
+      "description": "Report in Simplified Technical English: small words, one idea per sentence, what you did, whether it worked, what to do now. Two options and a recommendation when a decision is needed.",
+      "version": "0.1.0",
+      "category": "productivity"
+    }
+  ]
+}
