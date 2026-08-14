@@ -274,6 +274,10 @@ Two rules that keep a budget honest:
   what one lens can hold, a security lens over a permission change — take the higher tier and **say in
   one line that you did and why.** Silently overspending and silently underspending are the same defect.
 
+**A budget is tight because of the subscription, not the repo**, so `.agents/lifecycle.md` records which
+plan is paying and which profile was taken. When it says a lens was dropped for **cost** rather than
+relevance, do not helpfully add it back.
+
 If `.agents/lifecycle.md` sets no budget, say so once and use the defaults in this document's own model
 table.
 <!-- shared:budget:end -->

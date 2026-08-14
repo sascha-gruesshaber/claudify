@@ -11,7 +11,7 @@
       "name": "lifecycle",
       "source": "./plugins/lifecycle",
       "description": "The full ticket-to-green-branch lifecycle as callable skills: frame, grill, spec, plan, plan-check, build, plus tdd, diagnose, resolve-conflicts and show, and the six sub-agents they dispatch. Type /advance and it runs whichever phase comes next. Reads how your repo works — gates, tracker, forge, naming, review lenses, loop caps and the per-call effort budget — from eight files under .agents/, written by /onboard.",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "category": "workflow"
     },
     {

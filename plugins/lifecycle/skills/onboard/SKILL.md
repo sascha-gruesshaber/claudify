@@ -80,14 +80,22 @@ Ask the whole set **in one round**, numbered, each with your recommendation. Nev
    [`../build/prompts.md`](../build/prompts.md#lens-catalogue))*
    *Recommend: spec alignment, correctness, over-engineering, test gaps, repo standards — always;
    plus UI patterns and security only when the diff touches them.*
+   **Ask which lenses are *relevant* here; question 6 decides how many are *affordable*.** They are
+   different questions, and a lens dropped for cost is recorded differently from one that never applied.
 5. **Loop caps.** How many fix rounds per ticket before a finding is parked, and how many re-plans
    before a human is fetched?
    *Recommend: three fix rounds, one re-plan. Both are places this loop gets cheaply stuck.*
-6. **How much may one call cost?** Per role: the model tier, the reasoning effort, and a soft output
-   ceiling. Show the default table from
-   [`templates/lifecycle.md`](templates/lifecycle.md) § *Effort and budget* and ask what to change.
-   *Recommend: take the defaults. The lens count in question 4 already moved cost far more than any
-   of these will, so tune that first and come back to this only if a phase feels expensive.*
+6. **Which plan is paying for this, and how much may one call cost?** Ask the plan first — Pro, Max 5x,
+   Max 20x, or API billing — then offer the matching profile from
+   [`plan-profiles.md`](plan-profiles.md) and let them adjust it. The profile sets the tier, the
+   reasoning effort, the output ceiling, the wave width **and** the lens list in one answer, which is why
+   it is one question rather than five.
+   *Recommend: take the profile for their plan unchanged. It is calibrated on a real project, and every
+   dial in it interacts with the others.*
+
+   **The plan is a fact you cannot read off the repo, and it changes the right answer more than anything
+   else in this file.** On Pro the full lens set is not affordable and pretending otherwise means
+   discovering it halfway through a wave. Ask; do not assume Max.
 
    Two things to say out loud while asking, because both surprise people:
 
@@ -97,11 +105,12 @@ Ask the whole set **in one round**, numbered, each with your recommendation. Nev
    - **Reasoning effort is separate from the tier.** A cheap tier at high effort and an expensive tier at
      low effort are different trades, and the review lenses are the place where effort earns more than
      tier does.
-7. **Wave width.** How many tickets may build in parallel?
-   *Recommend: three. It is bounded by how many agent reports one orchestrator can triage well, not by
-   machine capacity.*
-8. **Frozen ground.** Which directories are history that must never be edited or cited as current?
-9. **The glossary.** Is there a vocabulary document, and does it beat a spec's wording?
+   - **Cut scope before you cut tier.** A cheap model on design-carrying work takes two or three times
+     the turns and fails its gates, so downgrading it is the most reliable way to spend *more*. Narrow
+     the wave and drop lenses first — [`plan-profiles.md`](plan-profiles.md) has the cut order, ranked by
+     value per token.
+7. **Frozen ground.** Which directories are history that must never be edited or cited as current?
+8. **The glossary.** Is there a vocabulary document, and does it beat a spec's wording?
    *Recommend: yes, and yes — two words for one thing is the cheapest bug to fix now and the most
    expensive later, because it reaches code, tests, tickets and commit subjects.*
 

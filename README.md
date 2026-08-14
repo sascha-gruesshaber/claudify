@@ -156,6 +156,31 @@ consequence: a reviewer that cannot finish inside its budget must **say so and e
 shallow pass that fits**. A truncated report reading as complete is the one outcome worse than an
 expensive one, because the caller cannot tell and ships on it.
 
+### Match it to the plan you are on
+
+`/onboard` asks which subscription is paying, because it changes the right answer more than anything in
+the repo does. Four ready-made profiles are in
+[`plan-profiles.md`](plugins/lifecycle/skills/onboard/plan-profiles.md).
+
+| Plan | Wave width | Spec cold reads | Sweep lenses | Implementation |
+|---|---|---|---|---|
+| **Pro** ~€20 | 1 | 1 — implementability | 2 | sonnet |
+| **Max 5×** ~€100 | **1–2** | 4 | 5 | opus on design, sonnet on mechanical |
+| **Max 20×** ~€200 | 3 | 4, opus on two | 5–7 | opus by default |
+| **API billing** | 3 | 4 | 5–7 | per-phase ceilings do the work |
+
+**Max 5× at one or two tickets in parallel is a measured working point**, not a guess — it is how the
+project this came from ran for months. Three tickets in a wave is where that plan stops being enough.
+
+Two things that are easy to get wrong:
+
+- **Wave width is the biggest lever**, not the tier. Three tickets is three implement → review → fix
+  cycles running *at once*, so it burns three times as fast against a rolling window.
+- **Cut scope before you cut tier.** A cheap model on design-carrying work takes two or three times the
+  turns and fails its gates, so downgrading it is the most reliable way to spend *more*. Narrow the wave
+  and drop lenses first — the cut order is ranked by value per token, and it says **never** drop the
+  implementability spec review or `plan-check`'s claims axis, whatever you are paying.
+
 ## Status
 
 **v0.2.0 — early. Use it, but read the caveats.** All twelve skills, six agents and the fragment gate are

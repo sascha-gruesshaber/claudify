@@ -46,8 +46,12 @@ In the whole-feature sweep, these — from the catalogue in the plugin's `build/
 
 ## Effort and budget
 
-What a single call is allowed to cost. **Tier and effort are the real levers; the ceiling is an
-instruction to the callee.**
+**Plan paying for this:** <Pro | Max 5x | Max 20x | API billing>
+**Profile taken:** <the matching one from the plugin's `onboard/plan-profiles.md`, adjusted where noted>
+
+What a single call is allowed to cost. **Wave width and the lens count move cost far more than the tier
+does** — and a cheap tier on design-carrying work usually costs *more*, because it takes two or three
+times the turns. Narrow the work before you downgrade it.
 
 | Role | Model | Effort | Soft output ceiling |
 |---|---|---|---|
@@ -78,6 +82,19 @@ doing the right thing.
 | `/plan` + `/plan-check` | <150k> | re-planning after a Not ready verdict |
 | one ticket: build + review + fix | <250k> | fix rounds; the cap below is what bounds it |
 | the whole-feature sweep | <120k> | the lens count above, more than anything else |
+
+### If a limit is hit, cut in this order
+
+Ranked by value per token, so the cheap-and-valuable survives. The full table is in the plugin's
+`onboard/plan-profiles.md`.
+
+1. wave width to 1 — the biggest single lever
+2. drop, from the bottom up: docs completeness, repo standards, over-engineering, test gaps
+3. lower the tier on **mechanical** slices only
+4. fix rounds to 1
+
+**Never cut the implementability spec review or plan-check's claims axis**, whatever the plan. They are
+the two places where a small spend prevents a large one.
 
 ### When to spend more, deliberately
 
