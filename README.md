@@ -5,7 +5,7 @@ Two Claude Code plugins, in one marketplace.
 | Plugin | What it is |
 |---|---|
 | **`lifecycle`** | A committed-spec engineering lifecycle: twelve callable skills and six sub-agents that take a ticket to a green branch. Reads how *your* repo works from `.agents/`. |
-| **`plain-words`** | Report in controlled English. Small words, one idea per sentence, what you did / did it work / what now. |
+| **`plain-words`** | Report in controlled English. Small words, one idea per sentence, what you did / did it work / what now. Strips the AI tells from everything you write. |
 
 ## Install
 

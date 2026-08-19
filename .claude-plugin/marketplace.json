@@ -17,8 +17,8 @@
     {
       "name": "plain-words",
       "source": "./plugins/plain-words",
-      "description": "Report in Simplified Technical English: small words, one idea per sentence, what you did, whether it worked, what to do now. Two options and a recommendation when a decision is needed.",
-      "version": "0.1.0",
+      "description": "Report in Simplified Technical English: small words, one idea per sentence, what you did, whether it worked, what to do now. Two options and a recommendation when a decision is needed. Strips the AI tells from everything that gets written, chat and committed documents alike: no em dashes, no filler, no puffery, plain words over fancy ones.",
+      "version": "0.2.0",
       "category": "productivity"
     }
   ]
